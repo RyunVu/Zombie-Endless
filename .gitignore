@@ -3,8 +3,6 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 
-# Ignore Ideas folder
-/Ideas/
 
 # Unity generated folders
 /[Ll]ibrary/
@@ -74,3 +72,6 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore Ideas folder inside Assets
+/[Aa]ssets/Ideas/
