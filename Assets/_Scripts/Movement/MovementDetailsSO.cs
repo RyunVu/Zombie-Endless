@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MovementDetails_", menuName = "Scriptable Object/Movement/MovementDetails")]
-public class MovememtDetailsSO : ScriptableObject
+public class MovementDetailsSO : ScriptableObject
 {
     #region Header MOVEMENT DETAILS
     [Space(10)]
