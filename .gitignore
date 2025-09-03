@@ -2,6 +2,11 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
+# Ignore Ideas folder
+/Ideas/
+
+# Unity generated folders
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
