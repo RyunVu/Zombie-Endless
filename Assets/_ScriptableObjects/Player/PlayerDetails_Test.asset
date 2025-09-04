@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerDetails_Test
   m_EditorClassIdentifier: 
   playerCharacterName: Test
-  playerPrefab: {fileID: 6231360077554563345, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+  playerPrefab: {fileID: 7457900685474217938, guid: db1be95283db6c749bc39c5839f332bd, type: 3}
   playerHealthAmount: 3
   isImmuneAfterHit: 0
   hitImmunityTime: 0
