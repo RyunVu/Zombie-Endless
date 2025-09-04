@@ -47,7 +47,7 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
-            _player.movementByVelocityEvent.CallMovementByVelocityEvent(direction, 0);
+            _player.idleEvent.CallIdleEvent();
         }
     }
 }

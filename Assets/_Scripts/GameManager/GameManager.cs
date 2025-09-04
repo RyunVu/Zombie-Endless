@@ -11,7 +11,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     private Player player;
 
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
 

@@ -280,6 +280,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6254508153286751839, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 427d0be64fe6ce04aa4b76a39426f014, type: 2}
     - target: {fileID: 6368897847525158612, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
       propertyPath: m_Size.y
       value: 1.1111112
