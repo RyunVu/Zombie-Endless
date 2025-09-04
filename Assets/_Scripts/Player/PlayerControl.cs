@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [DisallowMultipleComponent]
 public class PlayerControl : MonoBehaviour
@@ -24,6 +26,7 @@ public class PlayerControl : MonoBehaviour
     void FixedUpdate()
     {
         MovementInput();
+        AimInput(out float playerAngleDegrees, out AimDirection playerAimDirection);
     }
 
     private void MovementInput()
@@ -50,4 +53,27 @@ public class PlayerControl : MonoBehaviour
             _player.idleEvent.CallIdleEvent();
         }
     }
+
+    private void AimInput(out float playerAngleDegrees, out AimDirection playerAimDirection)
+    {
+        Vector3 mouseWorldPositon = HelperUtilities.GetMouseWorldPosition();
+
+        Vector3 playerDirection = (mouseWorldPositon - transform.position);
+
+        playerAngleDegrees = HelperUtilities.GetAngleFromVector(playerDirection);
+
+        playerAimDirection = HelperUtilities.GetAimDirection(playerAngleDegrees);
+
+        switch (playerAimDirection)
+        {
+            case AimDirection.Left:
+                _player.transform.localScale = new Vector3(-1f, 1f, 0f);
+                break;
+
+            case AimDirection.Right:
+                _player.transform.localScale = new Vector3(1f, 1f, 0f);
+                break;
+        }
+    }
+
 }
