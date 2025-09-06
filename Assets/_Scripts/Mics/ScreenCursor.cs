@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ScreenCursor : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ScreenCursor : MonoBehaviour
     }
     
     private void Update() {
-        transform.position = Input.mousePosition;
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        transform.position = mousePosition;
     }
 }
