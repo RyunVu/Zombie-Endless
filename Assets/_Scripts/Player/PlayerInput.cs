@@ -11,8 +11,12 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     // Input Action
     public InputAction _moveAction;
 
+    public InputAction _dashAction;
+
     // Input Value
     public Vector2 moveInput { get; private set; }
+    public bool dashWasPressed { get; private set; }
+
 
     protected override void Awake()
     {
@@ -21,16 +25,23 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         var actionMap = inputActions.FindActionMap("Player");
 
         _moveAction = actionMap.FindAction("Movement");
+        _dashAction = actionMap.FindAction("Dash");
     }
 
     private void OnEnable()
     {
         _moveAction.Enable();
+        _dashAction.Enable();
+
+        _dashAction.performed += OnDashPerformed;
     }
 
     private void OnDisable()
     {
         _moveAction.Disable();
+        _dashAction.Disable();
+
+        _dashAction.performed -= OnDashPerformed;
     }
 
     private void Update()
@@ -38,8 +49,22 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         moveInput = _moveAction.ReadValue<Vector2>();
     }
 
-   #region Public Helper Methods
-    
+    void LateUpdate()
+    {
+        dashWasPressed = false;
+    }
+
+    #region Input events handler
+
+    private void OnDashPerformed(InputAction.CallbackContext context)
+    {
+        dashWasPressed = true;
+    }
+
+    #endregion
+
+    #region Public Helper Methods
+
     public bool IsMovingHorizontally()
     {
         return Mathf.Abs(moveInput.x) > 0.1f;

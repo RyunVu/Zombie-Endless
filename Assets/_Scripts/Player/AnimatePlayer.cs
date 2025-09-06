@@ -22,16 +22,29 @@ public class AnimatePlayer : MonoBehaviour
     {
         _player.movementByVelocityEvent.OnMovementByVelocity += MovementByVelocityEvent_OnMovementByVelocity;
 
+        _player.movementToPositionEvent.OnMovementToPosition += MovementByVelocityEvent_OnMovementByVelocity;
+
         _player.idleEvent.OnIdle += IdleEvent_OnIdle;
     }
 
     void OnDisable()
     {
         _player.movementByVelocityEvent.OnMovementByVelocity -= MovementByVelocityEvent_OnMovementByVelocity;
+        _player.movementToPositionEvent.OnMovementToPosition -= MovementByVelocityEvent_OnMovementByVelocity;
 
         _player.idleEvent.OnIdle -= IdleEvent_OnIdle;
     }
 
+
+    // Handle dash movement
+    private void MovementByVelocityEvent_OnMovementByVelocity(MovementToPositionEvent @event, MovementToPositionArgs args)
+    {
+        InitializeDashAnimationParameters();
+        SetMovementToPositionAnimationParameters(args);
+    }
+
+
+    // Handle regular movement (walking)
     private void MovementByVelocityEvent_OnMovementByVelocity(MovementByVelocityEvent movementByVelocityEvent, MovementByVelocityArgs movementByVelocityArgs)
     {
         SetMovementAnimationParemeters();
@@ -42,15 +55,33 @@ public class AnimatePlayer : MonoBehaviour
         SetIdleAnimationParameters();
     }
 
+    private void InitializeDashAnimationParameters()
+    {
+        _player.animator.SetBool(Settings.isDashing, false);
+    }
+
     private void SetIdleAnimationParameters()
     {
         _player.animator.SetBool(Settings.isMoving, false);
         _player.animator.SetBool(Settings.isIdle, true);
+        _player.animator.SetBool(Settings.isDashing, false);
     }
 
     private void SetMovementAnimationParemeters()
     {
         _player.animator.SetBool(Settings.isMoving, true);
         _player.animator.SetBool(Settings.isIdle, false);
+        _player.animator.SetBool(Settings.isDashing, false);
+    }
+
+    
+    private void SetMovementToPositionAnimationParameters(MovementToPositionArgs args)
+    {
+        if (args.isDashing)
+        {
+            _player.animator.SetBool(Settings.isDashing, true);
+            _player.animator.SetBool(Settings.isMoving, false);
+            _player.animator.SetBool(Settings.isIdle, false);
+        }
     }
 }

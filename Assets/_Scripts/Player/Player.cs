@@ -17,6 +17,8 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(MovementByVelocity))]
 [RequireComponent(typeof(Idle))]
 [RequireComponent(typeof(IdleEvent))]
+[RequireComponent(typeof(MovementToPosition))]
+[RequireComponent(typeof(MovementToPositionEvent))]
 [RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public MovementByVelocityEvent movementByVelocityEvent;
     [HideInInspector] public Idle idle;
     [HideInInspector] public IdleEvent idleEvent;
+    [HideInInspector] public MovementToPosition movementToPosition;
+    [HideInInspector] public MovementToPositionEvent movementToPositionEvent;
     [HideInInspector] public Health health;
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public Animator animator;
@@ -44,6 +48,8 @@ public class Player : MonoBehaviour
         movementByVelocityEvent = GetComponent<MovementByVelocityEvent>();
         idle = GetComponent<Idle>();
         idleEvent = GetComponent<IdleEvent>();
+        movementToPosition = GetComponent<MovementToPosition>();
+        movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         health = GetComponent<Health>();
         animatePlayer = GetComponent<AnimatePlayer>();
     }

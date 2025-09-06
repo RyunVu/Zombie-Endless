@@ -13,6 +13,16 @@ public static class InputManager
         }
     }
 
+    public static bool DashWasPressed
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.dashWasPressed;
+            return false;
+        }
+    }
+
     public static float GetVerticalRaw()
     {
         if (PlayerInput.Instance != null)
