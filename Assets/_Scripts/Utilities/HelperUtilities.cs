@@ -10,11 +10,12 @@ public static class HelperUtilities
     {
         if (mainCamera == null) mainCamera = Camera.main;
 
-        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        Vector3 mouseScreenPosition = Mouse.current.position.ReadValue();
 
         // Clamp mouse position to screen size
         mouseScreenPosition.x = Mathf.Clamp(mouseScreenPosition.x, 0f, Screen.width);
         mouseScreenPosition.y = Mathf.Clamp(mouseScreenPosition.y, 0f, Screen.height);
+        mouseScreenPosition.z = 0f;
 
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
 

@@ -27,4 +27,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         player.Initialize(playerDetails);
     }
 
+    public Player GetPlayer()
+    {
+        return player;
+    }
+
 }
