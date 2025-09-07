@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
     #region Header GAMEOBJECT REFERENCES
@@ -7,29 +6,32 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     [Header("GAMEOBJECT REFERENCES")]
     #endregion Header GAMEOBJECT REFERENCES
 
-    private PlayerDetailsSO playerDetails;
-    private Player player;
-
+    private PlayerDetailsSO _playerDetails;
+    private Player _player;
+    private ProceduralTilemap _proceduralTileMap;
 
     protected override void Awake()
     {
         base.Awake();
 
-        playerDetails = GameResources.Instance.currentPlayer.playerDetails;
+        _playerDetails = GameResources.Instance.currentPlayer.playerDetails;
 
+        _proceduralTileMap = FindAnyObjectByType<ProceduralTilemap>();
         InstantiatePlayer();
     }
 
     void InstantiatePlayer()
     {
-        GameObject playerGameObject = Instantiate(playerDetails.playerPrefab);
-        player = playerGameObject.GetComponent<Player>();
-        player.Initialize(playerDetails);
+        GameObject playerGameObject = Instantiate(_playerDetails.playerPrefab);
+        _player = playerGameObject.GetComponent<Player>();
+        _player.Initialize(_playerDetails);
+
+        Vector3 spawnPosition = _proceduralTileMap.GetInitialSpawmPosition();
+        _player.transform.position = spawnPosition;
     }
 
     public Player GetPlayer()
     {
-        return player;
+        return _player;
     }
-
 }

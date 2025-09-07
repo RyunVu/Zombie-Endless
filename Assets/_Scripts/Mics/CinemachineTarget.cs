@@ -21,7 +21,7 @@ public class CinemachineTarget : MonoBehaviour
 
     void SetCinemachineTargetGroup()
     {
-        _cinemachineTargetGroup.AddMember(GameManager.Instance.GetPlayer().transform, 1f, 2.5f);
+        _cinemachineTargetGroup.AddMember(GameManager.Instance.GetPlayer().transform, 1f, 2f);
         _cinemachineTargetGroup.AddMember(cursorTarget, 1f, 1f);
     }
 
