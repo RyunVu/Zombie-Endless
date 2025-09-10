@@ -8,7 +8,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     private PlayerDetailsSO _playerDetails;
     private Player _player;
-    private ProceduralTilemap _proceduralTileMap;
+    private ChunkTilemapSystem _chunkTileMapSystem;
 
     protected override void Awake()
     {
@@ -16,8 +16,13 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
         _playerDetails = GameResources.Instance.currentPlayer.playerDetails;
 
-        _proceduralTileMap = FindAnyObjectByType<ProceduralTilemap>();
+        _chunkTileMapSystem = FindAnyObjectByType<ChunkTilemapSystem>();
+    }
+
+    void Start()
+    {
         InstantiatePlayer();
+        
     }
 
     void InstantiatePlayer()
@@ -26,7 +31,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         _player = playerGameObject.GetComponent<Player>();
         _player.Initialize(_playerDetails);
 
-        Vector3 spawnPosition = _proceduralTileMap.GetInitialSpawmPosition();
+        Vector3 spawnPosition = _chunkTileMapSystem.GetChunkCenterMiddlePoint(_chunkTileMapSystem.GetCurrentChunkCoord());
+        
         _player.transform.position = spawnPosition;
     }
 

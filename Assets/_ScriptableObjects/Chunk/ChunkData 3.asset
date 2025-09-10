@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e773c5a25044ba64dacb46b7237e8503, type: 3}
+  m_Name: ChunkData 3
+  m_EditorClassIdentifier: 
+  chunkPrefab: {fileID: 8238764659766767639, guid: 4809905f2925adc4881a502cd80682be, type: 3}
