@@ -32,7 +32,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         _player.Initialize(_playerDetails);
 
         Vector3 spawnPosition = _chunkTileMapSystem.GetChunkCenterMiddlePoint(_chunkTileMapSystem.GetCurrentChunkCoord());
-        
+
         _player.transform.position = spawnPosition;
     }
 

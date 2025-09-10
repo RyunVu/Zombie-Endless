@@ -1,61 +1,62 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class OptimizedChunkPool
 {
-    private HashSet<ChunkDataSO> _availableChunks;
-    private List<ChunkDataSO> _chunksList;
+    private Dictionary<ChunkDataSO, Queue<GameObject>> _pool = new Dictionary<ChunkDataSO, Queue<GameObject>>();
+    private List<ChunkDataSO> _chunkTypes = new List<ChunkDataSO>();
 
-    public OptimizedChunkPool()
+    public void InitializePool(List<ChunkDataSO> chunkPrefabs)
     {
-        _availableChunks = new HashSet<ChunkDataSO>();
-        _chunksList = new List<ChunkDataSO>();
-    }
-
-    public void InitializePool(List<ChunkDataSO> chunks)
-    {
-        foreach (var chunk in chunks)
+        foreach (var chunkData in chunkPrefabs)
         {
-            _availableChunks.Add(chunk);
-            _chunksList.Add(chunk);
-        }
-    }
-
-    public ChunkDataSO GetRandomChunk()
-    {
-        if (_chunksList.Count == 0) return null;
-
-        int randomIndex = UnityEngine.Random.Range(0, _chunksList.Count);
-        ChunkDataSO selectedChunk = _chunksList[randomIndex];
-
-        RemoveChunk(selectedChunk);
-        return selectedChunk;
-    }
-
-    public void ReturnChunk(ChunkDataSO chunk)
-    {
-        if (_availableChunks.Add(chunk))
-        {
-            _chunksList.Add(chunk);
-        }
-    }
-
-    private void RemoveChunk(ChunkDataSO chunk)
-    {
-        _availableChunks.Remove(chunk);
-
-
-        for (int i = 0; i < _chunksList.Count; i++)
-        {
-            if (_chunksList[i] == chunk)
+            if (!_pool.ContainsKey(chunkData))
             {
-                _chunksList[i] = _chunksList[_chunksList.Count - 1];
-                _chunksList.RemoveAt(i);
-                break;
+                _pool[chunkData] = new Queue<GameObject>();
+                _chunkTypes.Add(chunkData);
             }
+
+            // Pre-instantiate but keep inactive
+            GameObject obj = GameObject.Instantiate(chunkData.chunkPrefab);
+            obj.SetActive(false);
+            _pool[chunkData].Enqueue(obj);
         }
     }
 
-    public int AvailableCount => _chunksList.Count;
-    public bool IsEmpty => _chunksList.Count == 0;
-    
+    public GameObject GetRandomChunk()
+    {
+        if (_chunkTypes.Count == 0) return null;
+
+        ChunkDataSO randomData = _chunkTypes[UnityEngine.Random.Range(0, _chunkTypes.Count)];
+        return GetChunk(randomData);
+    }
+
+    public GameObject GetChunk(ChunkDataSO data)
+    {
+        if (_pool[data].Count > 0)
+        {
+            GameObject obj = _pool[data].Dequeue();
+            obj.SetActive(true);
+            return obj;
+        }
+
+        // Pool exhausted → create a new one
+        return GameObject.Instantiate(data.chunkPrefab);
+    }
+
+    public void ReturnChunk(ChunkDataSO data, GameObject obj)
+    {
+        obj.SetActive(false);
+        _pool[data].Enqueue(obj);
+    }
+
+    public int AvailableCount
+    {
+        get
+        {
+            int total = 0;
+            foreach (var q in _pool.Values) total += q.Count;
+            return total;
+        }
+    }
 }

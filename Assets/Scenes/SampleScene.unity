@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3172e7a517644cac7e1ffded3a25e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunkSize: 16
+  _chunkSize: 24
   _tileSize: 1
   _renderRadius: 1
   _chunkPrefabs:

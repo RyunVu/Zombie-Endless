@@ -36,8 +36,6 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
 
         // Spawn 3×3 grid
         SpawnChunksAround(_currentChunkCoord);
-
-        _player.position = GetChunkCenterMiddlePoint(_currentChunkCoord);
     }
 
     private void Update()
@@ -61,11 +59,23 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
             return;
         }
 
+        for (int i = 0; i < _chunkPrefabs.Count; i++)
+        {
+            if (_chunkPrefabs[i] == null)
+                Debug.LogError($"_chunkPrefabs[{i}] is NULL in inspector!");
+        }
+
         _chunkPool = new OptimizedChunkPool();
         List<ChunkDataSO> allChunks = new List<ChunkDataSO>();
 
         foreach (var chunkPrefab in _chunkPrefabs)
         {
+            if (chunkPrefab == null)
+            {
+                Debug.LogWarning("Null entry found in chunkPrefabs list. Skipping.");
+                continue;
+            }
+
             for (int i = 0; i < _poolMultiplier; i++)
             {
                 allChunks.Add(chunkPrefab);
@@ -124,20 +134,14 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
             }
         }
 
-        // Remove chunks that are no longer needed
-        List<Vector2Int> toRemove = new List<Vector2Int>();
-        foreach (var coord in _activeChunks.Keys)
+        // Despawn chunks not needed anymore
+        var currentCoords = new List<Vector2Int>(_activeChunks.Keys); // safe copy
+        foreach (var coord in currentCoords)
         {
             if (!needed.Contains(coord))
             {
                 DespawnChunk(coord);
-                toRemove.Add(coord);
             }
-        }
-        foreach (var coord in toRemove)
-        {
-            _activeChunks.Remove(coord);
-            _chunkDataMap.Remove(coord);
         }
 
         // Spawn missing chunks
@@ -152,43 +156,35 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
 
     private void SpawnChunk(Vector2Int chunkCoord)
     {
-        ChunkDataSO chunkData = _chunkPool.GetRandomChunk();
+        ChunkDataSO chunkData = _chunkPrefabs[UnityEngine.Random.Range(0, _chunkPrefabs.Count)];
+        GameObject chunkObject = _chunkPool.GetChunk(chunkData);
 
-        if (chunkData == null)
-        {
-            Debug.LogWarning($"No chunks available in pool! Cannot spawn chunk at {chunkCoord}");
-            return;
-        }
-
-        Vector3 worldPos = ChunkCoordToWorldPos(chunkCoord);
-        GameObject chunkObject = Instantiate(chunkData.chunkPrefab, worldPos, Quaternion.identity);
+        chunkObject.transform.position = ChunkCoordToWorldPos(chunkCoord);
         chunkObject.name = $"Chunk_{chunkCoord.x}_{chunkCoord.y}";
 
-         if (_grid != null)
+        if (_grid != null)
         {
-            chunkObject.transform.SetParent(_grid.transform, true); // worldPositionStays = true
+            chunkObject.transform.SetParent(_grid.transform, true);
         }
 
         _activeChunks[chunkCoord] = chunkObject;
         _chunkDataMap[chunkCoord] = chunkData;
-
-        Debug.Log($"Spawned chunk at {chunkCoord} | Pool remaining: {_chunkPool.AvailableCount}");
     }
 
     private void DespawnChunk(Vector2Int chunkCoord)
     {
         if (_activeChunks.TryGetValue(chunkCoord, out GameObject chunkObject))
         {
-            // Return chunk data to pool
             if (_chunkDataMap.TryGetValue(chunkCoord, out ChunkDataSO chunkData))
             {
-                _chunkPool.ReturnChunk(chunkData);
-                Debug.Log($"Returned chunk to pool | Pool count: {_chunkPool.AvailableCount}");
+                if (chunkObject != null && chunkData != null)
+                {
+                    _chunkPool.ReturnChunk(chunkData, chunkObject);
+                }
             }
 
-            // Destroy the game object
-            Destroy(chunkObject);
-            Debug.Log($"Despawned chunk at {chunkCoord}");
+            _activeChunks.Remove(chunkCoord);
+            _chunkDataMap.Remove(chunkCoord);
         }
     }
 
@@ -212,31 +208,26 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
     public bool IsChunkActive(Vector2Int coord) => _activeChunks.ContainsKey(coord);
     public Vector2Int GetCurrentChunkCoord() => _currentChunkCoord;
     public Vector3 GetChunkCenterMiddlePoint(Vector2Int chunkCoord)
-{
-    // Directly return the chunk center (no half offset needed)
-    return ChunkCoordToWorldPos(chunkCoord);
-}
+    {
+        // Directly return the chunk center (no half offset needed)
+        return ChunkCoordToWorldPos(chunkCoord);
+    }
 
     // Force respawn all chunks (useful for testing)
     [ContextMenu("Respawn All Chunks")]
     public void RespawnAllChunks()
     {
-        // Clear all active chunks
-        foreach (var chunk in _activeChunks.Values)
+        // Despawn all active chunks safely
+        var coords = new List<Vector2Int>(_activeChunks.Keys);
+        foreach (var coord in coords)
         {
-            Destroy(chunk);
+            DespawnChunk(coord); // This now returns the GameObject to the pool instead of Destroy
         }
-        _activeChunks.Clear();
-
-        // Return all chunk data to pool
-        foreach (var chunkData in _chunkDataMap.Values)
-        {
-            _chunkPool.ReturnChunk(chunkData);
-        }
-        _chunkDataMap.Clear();
 
         // Respawn around current position
         SpawnChunksAround(_currentChunkCoord);
+
+        Debug.Log("Respawned all chunks around current position.");
     }
     #endregion
 
@@ -244,6 +235,7 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
     private void OnDrawGizmos()
     {
         if (_player == null) return;
+        if (_grid == null) return;
 
         // Draw active chunks
         foreach (var coord in _activeChunks.Keys)
@@ -274,7 +266,7 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
         GUILayout.Label($"Active Chunks: {GetActiveChunkCount()}");
         GUILayout.Label($"Pool Available: {GetPoolAvailableCount()}");
         GUILayout.Label($"Player Chunk: {_currentChunkCoord}");
-        
+
         if (GUILayout.Button("Respawn All Chunks"))
         {
             RespawnAllChunks();
@@ -282,4 +274,5 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
         GUILayout.EndArea();
     }
     #endregion
+    
 }
