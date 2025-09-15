@@ -4,30 +4,31 @@ using UnityEngine;
 public class OptimizedChunkPool
 {
     private Dictionary<ChunkDataSO, Queue<GameObject>> _pool = new Dictionary<ChunkDataSO, Queue<GameObject>>();
-    private List<ChunkDataSO> _chunkTypes = new List<ChunkDataSO>();
+    private List<ChunkDataSO> _chunks = new List<ChunkDataSO>();
 
-    public void InitializePool(List<ChunkDataSO> chunkPrefabs)
+    public void InitializePool(List<ChunkDataSO> chunkPrefabs, int prewarmCount)
+{
+    foreach (var chunkData in chunkPrefabs)
     {
-        foreach (var chunkData in chunkPrefabs)
+        if (!_pool.ContainsKey(chunkData))
         {
-            if (!_pool.ContainsKey(chunkData))
-            {
-                _pool[chunkData] = new Queue<GameObject>();
-                _chunkTypes.Add(chunkData);
-            }
+            _pool[chunkData] = new Queue<GameObject>();
+            _chunks.Add(chunkData);
+        }
 
-            // Pre-instantiate but keep inactive
+        for (int i = 0; i < prewarmCount; i++)
+        {
             GameObject obj = GameObject.Instantiate(chunkData.chunkPrefab);
             obj.SetActive(false);
             _pool[chunkData].Enqueue(obj);
         }
     }
-
+}
     public GameObject GetRandomChunk()
     {
-        if (_chunkTypes.Count == 0) return null;
+        if (_chunks.Count == 0) return null;
 
-        ChunkDataSO randomData = _chunkTypes[UnityEngine.Random.Range(0, _chunkTypes.Count)];
+        ChunkDataSO randomData = _chunks[UnityEngine.Random.Range(0, _chunks.Count)];
         return GetChunk(randomData);
     }
 

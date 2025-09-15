@@ -66,23 +66,8 @@ public class ChunkTilemapSystem : SingletonMonobehaviour<ChunkTilemapSystem>
         }
 
         _chunkPool = new OptimizedChunkPool();
-        List<ChunkDataSO> allChunks = new List<ChunkDataSO>();
 
-        foreach (var chunkPrefab in _chunkPrefabs)
-        {
-            if (chunkPrefab == null)
-            {
-                Debug.LogWarning("Null entry found in chunkPrefabs list. Skipping.");
-                continue;
-            }
-
-            for (int i = 0; i < _poolMultiplier; i++)
-            {
-                allChunks.Add(chunkPrefab);
-            }
-        }
-
-        _chunkPool.InitializePool(allChunks);
+        _chunkPool.InitializePool(_chunkPrefabs, _poolMultiplier);
         Debug.Log($"Initialized chunk pool with {_chunkPool.AvailableCount} chunks.");
     }
 
