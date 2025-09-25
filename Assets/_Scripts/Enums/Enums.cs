@@ -12,3 +12,9 @@ public enum GroundGenMethod
     CellularAutomata,       // Organic, blob-like patterns
     Zones                   // Different zones of different tiles
 }
+
+public enum WeaponType
+{
+    Melee,
+    Ranged,
+}

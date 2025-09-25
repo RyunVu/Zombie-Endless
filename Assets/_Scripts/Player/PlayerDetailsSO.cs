@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerDetails_", menuName = "Scriptable Object/Player/Player Details")]
@@ -16,7 +17,7 @@ public class PlayerDetailsSO : ScriptableObject
     [Tooltip("Prefab gameobject for the player")]
     #endregion
     public GameObject playerPrefab;
-    
+
     #region Header HEALTH
     [Space(10)]
     [Header("HEALTH")]
@@ -30,10 +31,23 @@ public class PlayerDetailsSO : ScriptableObject
     [Tooltip("Select if has immunity period immediately after being hit.  If so specify the immunity time in seconds in the other field")]
     #endregion
     public bool isImmuneAfterHit = false;
-    
+
     #region Tooltip
     [Tooltip("Immunity time in seconds after being hit")]
     #endregion
     public float hitImmunityTime;
+
+    #region Header WEAPON
+    [Space(10)]
+    [Header("WEAPON")]
+    #endregion
+    #region Tooltip
+    [Tooltip("Player initail starting weapon")]
+    #endregion
+    public WeaponDetailsSO startingWeapon;
+    #region Tooltip
+    [Tooltip("Populate with the list of starting weapons")]
+    #endregion
+    public List<WeaponDetailsSO> startingWeaponList;
 
 }

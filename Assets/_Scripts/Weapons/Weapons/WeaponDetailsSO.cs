@@ -6,68 +6,81 @@ public class WeaponDetailsSO : ScriptableObject
     #region Header WEAPON BASE DETAILS
     [Space(10)]
     [Header("WEAPON BASE DETAILS")]
-    #endregion Header WEAPON BASE DETAILS
-    #region Tooltip
-    [Tooltip("Weapon name")]
-    #endregion Tooltip
+    #endregion Header WEAPON BASE DETAILS 
+    [Tooltip("Weapon name")]    
     public string weaponName;
-
-    #region Tooltip
+    
     [Tooltip("The sprite for the weapon - the sprite should have the 'generate physics shape' option selected ")]
-    #endregion Tooltip
     public Sprite weaponSprite;
+    
+    [Tooltip("Melee or Ranged")]
+    public WeaponType weaponType;
 
-    #region Header WEAPON CONFIGURATION
+    #region Header RANGED WEAPON CONFIGURATION
     [Space(10)]
     [Header("WEAPON CONFIGURATION")]
     #endregion Header WEAPON CONFIGURATION
-    #region Tooltip
     [Tooltip("Weapon Shoot Position - the offset position for the end of the weapon from the sprite pivot pont")]
-    #endregion Tooltip
     public Vector3 weaponShootPosition;
 
-    #region Tooltip
-    [Tooltip("Weapon current ammo")]
-    #endregion Tooltip
+    [Tooltip("Weapon current ammo")]   
     public AmmoDetailsSO weaponCurrentAmmo;
 
-    
+    #region Header RANGED SETTINGS
+    [Space(10)]
     #region Header WEAPON OPERATING VALUES
     [Space(10)]
     [Header("WEAPON OPERATING VALUES")]
     #endregion Header WEAPON OPERATING VALUES
-    #region Tooltip
+    
     [Tooltip("Select if the weapon has infinite ammo")]
-    #endregion Tooltip
     public bool hasInfiniteAmmo = false;
-
-    #region Tooltip
+ 
     [Tooltip("Select if the weapon has infinite clip capacity")]
-    #endregion Tooltip
     public bool hasInfiniteClipCapacity = false;
 
-    #region Tooltip
     [Tooltip("The weapon capacity - shots before a reload")]
-    #endregion Tooltip
     public int weaponClipAmmoCapacity = 6;
-
-    #region Tooltip
+    
     [Tooltip("Weapon ammo capacity - the maximum number of rounds at that can be held for this weapon")]
-    #endregion Tooltip
     public int weaponAmmoCapacity = 100;
 
-    #region Tooltip
     [Tooltip("Weapon Fire Rate - 0.2 means 5 shots a second")]
-    #endregion Tooltip
     public float weaponFireRate = 0.2f;
 
-    #region Tooltip
     [Tooltip("Weapon Precharge Time - time in seconds to hold fire button down before firing")]
-    #endregion Tooltip
     public float weaponPrechargeTime = 0f;
 
-    #region Tooltip
     [Tooltip("This is the weapon reload time in seconds")]
-    #endregion Tooltip
     public float weaponReloadTime = 0f;
+    #endregion
+
+    #region Header MELEE SETTINGS
+    [Space(10)]
+    #region Header MELEE WEAPON CONFIGURATION
+    [Header("MELEE SETTINGS")]
+    #endregion
+    [Tooltip("Damage per melee hit")]
+    public int meleeDamage = 10;
+
+    [Tooltip("How far the attack reaches")]
+    public float meleeRange = 1.5f;
+
+    [Tooltip("Attack swing angel (degrees)")]
+    public float meleeArc = 90f;
+
+    [Tooltip("How long does the swing takes")]
+    public float meleeSwingDuration = .2f;
+
+    [Tooltip("Cooldown before next swing")]
+    public float meleeCooldown = .4f;
+
+    [Tooltip("Knockback force appiled to enemies")]
+    public float meleeKnockback = 5f;
+
+    [Tooltip("Can hit multiple enemies?")]
+    public bool meleeCanPierce = true;
+
+    #endregion
+
 }
