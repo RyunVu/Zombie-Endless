@@ -1,7 +1,11 @@
 public enum AimDirection
 {
+    Up,
+    Down,
+    Left,
     Right,
-    Left
+    UpLeft,
+    UpRight,
 }
 
 public enum GroundGenMethod

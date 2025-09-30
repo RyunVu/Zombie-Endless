@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Linq.Expressions;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [DisallowMultipleComponent]
 public class PlayerControl : MonoBehaviour
@@ -16,6 +14,7 @@ public class PlayerControl : MonoBehaviour
 
     private Player _player;
     private float _moveSpeed;
+    private int _currentWeaponIndex = 1;
 
     #region DASHING VARIABLES
     private Coroutine _playerDashCoroutine;
@@ -36,6 +35,7 @@ public class PlayerControl : MonoBehaviour
     {
         _waitForFixedUpdate = new WaitForFixedUpdate();
 
+        SetStartingWeapon();
     }
 
     void Update()
@@ -51,6 +51,31 @@ public class PlayerControl : MonoBehaviour
 
     void FixedUpdate()
     {
+    }
+
+    private void SetStartingWeapon()
+    {
+        int index = 1;
+
+        foreach (Weapon weapon in _player.weaponList)
+        {
+            if (weapon.weaponDetails == _player.playerDetailsSO.startingWeapon)
+            {
+                SetWeaponByIndex(index);
+                break;
+            }
+            index++;
+        }
+    }
+
+    private void SetWeaponByIndex(int weaponIndex)
+    {
+        if (weaponIndex - 1 < _player.weaponList.Count)
+        {
+            _currentWeaponIndex = weaponIndex;
+
+            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[weaponIndex - 1]);
+        }
     }
 
     private void MovementInput()

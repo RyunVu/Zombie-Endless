@@ -1,4 +1,4 @@
-using System.Data.Common;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -20,6 +20,10 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(MovementToPosition))]
 [RequireComponent(typeof(MovementToPositionEvent))]
 [RequireComponent(typeof(Health))]
+
+[RequireComponent(typeof(SetActiveWeaponEvent))]
+[RequireComponent(typeof(ActiveWeapon))]
+
 public class Player : MonoBehaviour
 {
     [HideInInspector] public PlayerDetailsSO playerDetailsSO;
@@ -35,7 +39,10 @@ public class Player : MonoBehaviour
     [HideInInspector] public SpriteRenderer spriteRenderer;
     [HideInInspector] public Animator animator;
     [HideInInspector] public AnimatePlayer animatePlayer;
+    [HideInInspector] public ActiveWeapon activeWeapon;
+    [HideInInspector] public SetActiveWeaponEvent setActiveWeaponEvent;
 
+    public List<Weapon> weaponList = new List<Weapon>();
 
     private void Awake()
     {
@@ -52,14 +59,44 @@ public class Player : MonoBehaviour
         movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         health = GetComponent<Health>();
         animatePlayer = GetComponent<AnimatePlayer>();
+        activeWeapon = GetComponent<ActiveWeapon>();
+        setActiveWeaponEvent = GetComponent<SetActiveWeaponEvent>();
     }
 
     public void Initialize(PlayerDetailsSO playerDetails)
     {
         this.playerDetailsSO = playerDetails;
 
+        CreatePlayerStartingWeapon();
+
         SetPlayerHealth();
     }
+
+    private void CreatePlayerStartingWeapon()
+    {
+        weaponList.Clear();
+
+        foreach (WeaponDetailsSO weapon in playerDetailsSO.startingWeaponList)
+        {
+            AddWeaponToList(weapon);    
+        }
+    }
+
+    private void AddWeaponToList(WeaponDetailsSO weaponDetail)
+    {
+        Weapon weapon = new Weapon()
+        {
+            weaponDetails = weaponDetail,
+            weaponReloadTimer = 0f,
+            weaponClipAmmoRemainig = weaponDetail.weaponClipAmmoCapacity,
+            weaponTotalAmmoRemaining = weaponDetail.weaponAmmoCapacity,
+            isWeaponReloading = false
+        };
+
+        weaponList.Add(weapon);
+        weapon.weaponPositionInList = weaponList.Count;
+        setActiveWeaponEvent.CallSetActiveWeaponEvent(weapon);
+    }   
 
     private void SetPlayerHealth()
     {
