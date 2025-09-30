@@ -23,6 +23,10 @@ using UnityEngine.Rendering;
 
 [RequireComponent(typeof(SetActiveWeaponEvent))]
 [RequireComponent(typeof(ActiveWeapon))]
+[RequireComponent(typeof(AimWeapon))]
+[RequireComponent(typeof(AimWeaponEvent))]
+[RequireComponent(typeof(WeaponFiredEvent))]
+[RequireComponent(typeof(WeaponPreFireEvent))]
 
 public class Player : MonoBehaviour
 {
@@ -41,6 +45,10 @@ public class Player : MonoBehaviour
     [HideInInspector] public AnimatePlayer animatePlayer;
     [HideInInspector] public ActiveWeapon activeWeapon;
     [HideInInspector] public SetActiveWeaponEvent setActiveWeaponEvent;
+    [HideInInspector] public AimWeapon aimWeapon;
+    [HideInInspector] public AimWeaponEvent aimWeaponEvent;
+    [HideInInspector] public WeaponPreFireEvent weaponPreFireEvent;
+    [HideInInspector] public WeaponFiredEvent weaponFiredEvent;
 
     public List<Weapon> weaponList = new List<Weapon>();
 
@@ -59,8 +67,14 @@ public class Player : MonoBehaviour
         movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         health = GetComponent<Health>();
         animatePlayer = GetComponent<AnimatePlayer>();
+        
         activeWeapon = GetComponent<ActiveWeapon>();
         setActiveWeaponEvent = GetComponent<SetActiveWeaponEvent>();
+        aimWeapon = GetComponent<AimWeapon>();
+        aimWeaponEvent = GetComponent<AimWeaponEvent>();
+        weaponPreFireEvent = GetComponent<WeaponPreFireEvent>();
+        weaponFiredEvent = GetComponent<WeaponFiredEvent>();
+
     }
 
     public void Initialize(PlayerDetailsSO playerDetails)
@@ -82,6 +96,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add and equip the new weapon to the weapon dictionary
+    /// </summary>
     private void AddWeaponToList(WeaponDetailsSO weaponDetail)
     {
         Weapon weapon = new Weapon()

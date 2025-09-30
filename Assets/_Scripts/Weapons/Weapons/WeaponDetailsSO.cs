@@ -16,22 +16,17 @@ public class WeaponDetailsSO : ScriptableObject
     [Tooltip("Melee or Ranged")]
     public WeaponType weaponType;
 
-    #region Header RANGED WEAPON CONFIGURATION
+    #region Header RANGED SETTINGS
     [Space(10)]
-    [Header("WEAPON CONFIGURATION")]
-    #endregion Header WEAPON CONFIGURATION
+    #region Header RANGED WEAPON CONFIGURATION
+    [Header("RANGED SETTINGS")]
+    #endregion
+    
     [Tooltip("Weapon Shoot Position - the offset position for the end of the weapon from the sprite pivot pont")]
     public Vector3 weaponShootPosition;
 
     [Tooltip("Weapon current ammo")]   
     public AmmoDetailsSO weaponCurrentAmmo;
-
-    #region Header RANGED SETTINGS
-    [Space(10)]
-    #region Header WEAPON OPERATING VALUES
-    [Space(10)]
-    [Header("WEAPON OPERATING VALUES")]
-    #endregion Header WEAPON OPERATING VALUES
     
     [Tooltip("Select if the weapon has infinite ammo")]
     public bool hasInfiniteAmmo = false;

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Player))]
 [DisallowMultipleComponent]
 public class PlayerControl : MonoBehaviour
 {

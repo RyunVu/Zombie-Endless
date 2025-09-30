@@ -2,16 +2,27 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class WeaponPreFiveEvent : MonoBehaviour
+public class WeaponPreFireEvent : MonoBehaviour
 {
-    public event Action<WeaponPreFiveEvent, WeaponPreFireEventArgs> OnWeaponPreFireEvent;
-    public void CallOnWeaponPreFireEvent(WeaponPreFiveEvent weaponPreFiveEvent, WeaponPreFireEventArgs weaponPreFiveEventArgs)
+    public event Action<WeaponPreFireEvent, WeaponPreFireEventArgs> OnWeaponPreFireEvent;
+    public void CallOnWeaponPreFireEvent(bool fire, AimDirection aimDirection, float aimAngle, float weaponAimAngle, Vector3 weaponAimDirectionVector)
     {
-        OnWeaponPreFireEvent?.Invoke(this, new WeaponPreFireEventArgs());
+        OnWeaponPreFireEvent?.Invoke(this, new WeaponPreFireEventArgs()
+        {
+            fire = fire,
+            aimDirection = aimDirection,
+            aimAngle = aimAngle,
+            weaponAimAngle = weaponAimAngle,
+            weaponAimDirectionVector = weaponAimDirectionVector    
+        });
     }
 }
 
 public class WeaponPreFireEventArgs : EventArgs
 {
-    public Weapon weapon;
+    public bool fire;
+    public AimDirection aimDirection;
+    public float aimAngle;
+    public float weaponAimAngle;
+    public Vector3 weaponAimDirectionVector;
 }
