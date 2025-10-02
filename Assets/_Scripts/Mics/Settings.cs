@@ -11,7 +11,10 @@ public static class Settings
     // Animator parameters - Player
     public static int isIdle = Animator.StringToHash("isIdle");
     public static int isMoving = Animator.StringToHash("isMoving");
-    public static int isDashing = Animator.StringToHash("isDashing");
+    public static int aimRight = Animator.StringToHash("aimRight");
+    public static int aimLeft = Animator.StringToHash("aimLeft");
+    public static int dashRight = Animator.StringToHash("dashRight");
+    public static int dashLeft = Animator.StringToHash("dashLeft");
     public static int use = Animator.StringToHash("use");
     public static float baseSpeedForPlayerAnimations = 8f;
     #endregion

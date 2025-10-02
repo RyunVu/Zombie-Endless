@@ -53,7 +53,6 @@ public class PlayerControl : MonoBehaviour
 
         PlayerDashCooldownTimer();
 
-        PlayerFacingDirection(out float playerAngleDegrees, out AimDirection playerAimDirection);
     }
 
     void FixedUpdate()
@@ -85,27 +84,6 @@ public class PlayerControl : MonoBehaviour
         }
     }
     
-    private void PlayerFacingDirection(out float playerAngleDegrees, out AimDirection playerAimDirection)
-    {
-        Vector3 mouseWorldPositon = HelperUtilities.GetMouseWorldPosition();
-
-        Vector3 playerDirection = (mouseWorldPositon - transform.position);
-
-        playerAngleDegrees = HelperUtilities.GetAngleFromVector(playerDirection);
-
-        playerAimDirection = HelperUtilities.GetAimDirection(playerAngleDegrees);
-
-        switch (playerAimDirection)
-        {
-            case AimDirection.Left:
-                _playerSpriteRenderer.flipX = true;
-                break;
-
-            case AimDirection.Right:
-                _playerSpriteRenderer.flipX = false;
-                break;
-        }
-    }
 
     private void MovementInput()
     {
@@ -177,12 +155,14 @@ public class PlayerControl : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // if collided with something stop player roll coroutine
+        Debug.Log("Hit something: " + collision.gameObject.name);
         StopPlayerRollRoutine();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         // if in collision with something stop player roll coroutine
+        Debug.Log("Hit something: " + collision.gameObject.name);
         StopPlayerRollRoutine();
     }
 

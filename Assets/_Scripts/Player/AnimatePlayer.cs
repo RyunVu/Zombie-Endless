@@ -6,11 +6,6 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class AnimatePlayer : MonoBehaviour
 {
-    #region ANIMATOR STATES
-    public const string PLAYER_IDLE = "Idle";
-    public const string PLAYER_RUN = "Run";
-    public const string PLAYER_DASH = "Dash";
-    #endregion
     private Player _player;
 
     void Awake()
@@ -22,66 +17,104 @@ public class AnimatePlayer : MonoBehaviour
     {
         _player.movementByVelocityEvent.OnMovementByVelocity += MovementByVelocityEvent_OnMovementByVelocity;
 
-        _player.movementToPositionEvent.OnMovementToPosition += MovementByVelocityEvent_OnMovementByVelocity;
+        _player.movementToPositionEvent.OnMovementToPosition += MovementByVelocityEvent_OnMovementToPosition;
 
         _player.idleEvent.OnIdle += IdleEvent_OnIdle;
+
+        _player.aimWeaponEvent.OnWeaponAim += AimWeaponEvent_OnWeaponAim;
     }
 
     void OnDisable()
     {
         _player.movementByVelocityEvent.OnMovementByVelocity -= MovementByVelocityEvent_OnMovementByVelocity;
-        _player.movementToPositionEvent.OnMovementToPosition -= MovementByVelocityEvent_OnMovementByVelocity;
+
+        _player.movementToPositionEvent.OnMovementToPosition -= MovementByVelocityEvent_OnMovementToPosition;
 
         _player.idleEvent.OnIdle -= IdleEvent_OnIdle;
+
+        _player.aimWeaponEvent.OnWeaponAim -= AimWeaponEvent_OnWeaponAim;
+
     }
 
 
     // Handle dash movement
-    private void MovementByVelocityEvent_OnMovementByVelocity(MovementToPositionEvent @event, MovementToPositionArgs args)
+    private void MovementByVelocityEvent_OnMovementByVelocity(MovementByVelocityEvent @event, MovementByVelocityArgs args)
     {
         InitializeDashAnimationParameters();
-        SetMovementToPositionAnimationParameters(args);
+        SetMovementAnimationParemeters();
     }
 
 
     // Handle regular movement (walking)
-    private void MovementByVelocityEvent_OnMovementByVelocity(MovementByVelocityEvent movementByVelocityEvent, MovementByVelocityArgs movementByVelocityArgs)
+    private void MovementByVelocityEvent_OnMovementToPosition(MovementToPositionEvent movementByVelocityEvent, MovementToPositionArgs movementToPositionArgs)
     {
-        SetMovementAnimationParemeters();
+        InitializeAimAnimationParameters();
+        InitializeDashAnimationParameters();
+        SetMovementToPositionAnimationParameters(movementToPositionArgs);
+    }
+
+    private void AimWeaponEvent_OnWeaponAim(AimWeaponEvent aimWeaponEvent, AimWeaponEventArgs aimWeaponEventArgs)
+    {
+        InitializeAimAnimationParameters();
+        InitializeDashAnimationParameters();
+        SetAimWeaponAnimationParameters(aimWeaponEventArgs.aimDirection);
     }
 
     private void IdleEvent_OnIdle(IdleEvent idleEvent)
     {
+        InitializeDashAnimationParameters();
         SetIdleAnimationParameters();
+    }
+
+    private void InitializeAimAnimationParameters()
+    {
+        _player.animator.SetBool(Settings.aimLeft, false);
+        _player.animator.SetBool(Settings.aimRight, false);
     }
 
     private void InitializeDashAnimationParameters()
     {
-        _player.animator.SetBool(Settings.isDashing, false);
+        _player.animator.SetBool(Settings.dashLeft, false);
+        _player.animator.SetBool(Settings.dashRight, false);
     }
 
     private void SetIdleAnimationParameters()
     {
         _player.animator.SetBool(Settings.isMoving, false);
         _player.animator.SetBool(Settings.isIdle, true);
-        _player.animator.SetBool(Settings.isDashing, false);
     }
 
     private void SetMovementAnimationParemeters()
     {
         _player.animator.SetBool(Settings.isMoving, true);
         _player.animator.SetBool(Settings.isIdle, false);
-        _player.animator.SetBool(Settings.isDashing, false);
     }
 
-    
+
     private void SetMovementToPositionAnimationParameters(MovementToPositionArgs args)
     {
         if (args.isDashing)
         {
-            _player.animator.SetBool(Settings.isDashing, true);
-            _player.animator.SetBool(Settings.isMoving, false);
-            _player.animator.SetBool(Settings.isIdle, false);
+            if (args.moveDirection.x > 0f)
+                _player.animator.SetBool(Settings.dashRight, true);
+
+            else if (args.moveDirection.x < 0f)
+                _player.animator.SetBool(Settings.dashLeft, true);
+                
         }
     }
+
+    private void SetAimWeaponAnimationParameters(AimDirection aimDirection)
+    {
+        switch (aimDirection)
+        {
+            case AimDirection.Left:
+                _player.animator.SetBool(Settings.aimLeft, true);
+                break;
+            case AimDirection.Right:
+                _player.animator.SetBool(Settings.aimRight, true);
+                break;
+        }
+    }
+    
 }
