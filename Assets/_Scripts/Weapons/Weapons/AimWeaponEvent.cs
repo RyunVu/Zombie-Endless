@@ -5,7 +5,7 @@ public class AimWeaponEvent : MonoBehaviour
 {
     public event Action<AimWeaponEvent, AimWeaponEventArgs> OnWeaponAim;
 
-    public void CallOnAimWeaponEvent(AimDirection aimDirection, float aimAngle, float weaponAimAngle, Vector3 weaponAimDirectionVector)
+    public void CallAimWeaponEvent(AimDirection aimDirection, float aimAngle, float weaponAimAngle, Vector3 weaponAimDirectionVector)
     {
         OnWeaponAim?.Invoke(this, new AimWeaponEventArgs()
         {

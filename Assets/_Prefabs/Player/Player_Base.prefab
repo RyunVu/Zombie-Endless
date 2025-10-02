@@ -202,9 +202,9 @@ GameObject:
   - component: {fileID: 3900494049126280597}
   - component: {fileID: 2046630232609489820}
   - component: {fileID: 7703185849474717898}
-  - component: {fileID: 3137325878166861503}
-  - component: {fileID: 2249040808421997932}
   - component: {fileID: 6369329628786274619}
+  - component: {fileID: 1144708438792316747}
+  - component: {fileID: 3448920449542443774}
   m_Layer: 0
   m_Name: Player_Base
   m_TagString: Untagged
@@ -241,20 +241,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: fdcc303e7afaa974ea5da0d05e6e12be, type: 3}
-  _moveAction:
-    m_Name: Move
+  moveAction:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 97bed100-397d-4f8f-b2b4-34fc8f4d2dd5
+    m_Id: d6d44e4e-a261-45b1-b32e-1c277f02dc9c
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  _dashAction:
-    m_Name: Dash
+  dashAction:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 5d0984d4-2e80-483a-9628-906ec5d3b21c
+    m_Id: 71acfd7c-bbd3-46be-ab25-bc042b0398a1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  attackAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: eb0da7cb-d38b-4c03-b2e4-6c936665721e
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -301,8 +310,9 @@ MonoBehaviour:
   setActiveWeaponEvent: {fileID: 0}
   aimWeapon: {fileID: 0}
   aimWeaponEvent: {fileID: 0}
-  weaponPreFireEvent: {fileID: 0}
+  fireWeaponEvent: {fileID: 0}
   weaponFiredEvent: {fileID: 0}
+  fireWeapon: {fileID: 0}
   weaponList: []
 --- !u!210 &6394936286438258822
 SortingGroup:
@@ -667,30 +677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponRotationPointTransform: {fileID: 19512759865225162}
---- !u!114 &3137325878166861503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6231360077554563345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8466a3f97de38874db72ec4b3e8b5377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2249040808421997932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6231360077554563345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90760fa408f6def4898af287f06025bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6369329628786274619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,6 +687,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4490f2e72e6cd8c4e87c691f5b97f85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1144708438792316747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231360077554563345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd273ed53515084da4c6cec0f694ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3448920449542443774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231360077554563345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7af4872790a6ff4dbbcccb029c6ba59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7215951249299589708
@@ -878,7 +888,7 @@ Transform:
   m_GameObject: {fileID: 9127654852928145974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.382, y: -0.313, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

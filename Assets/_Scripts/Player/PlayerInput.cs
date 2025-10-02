@@ -39,6 +39,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.Enable();
 
         dashAction.performed += OnDashPerformed;
+        attackAction.performed += OnAttackPerformed;
     }
 
     private void OnDisable()
@@ -48,6 +49,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.Disable();
 
         dashAction.performed -= OnDashPerformed;
+        attackAction.performed -= OnAttackPerformed;
     }
 
     private void Update()

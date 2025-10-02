@@ -17,7 +17,7 @@ MonoBehaviour:
   playerHealthAmount: 3
   isImmuneAfterHit: 0
   hitImmunityTime: 0
-  startingWeapon: {fileID: 11400000, guid: cedf692b32c306440be75b39516e8f93, type: 2}
+  startingWeapon: {fileID: 11400000, guid: 52f1e490d0066e04f80d2ff3f836943e, type: 2}
   startingWeaponList:
   - {fileID: 11400000, guid: cedf692b32c306440be75b39516e8f93, type: 2}
   - {fileID: 11400000, guid: 52f1e490d0066e04f80d2ff3f836943e, type: 2}

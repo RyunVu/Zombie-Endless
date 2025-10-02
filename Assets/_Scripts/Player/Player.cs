@@ -27,7 +27,8 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(AimWeapon))]
 [RequireComponent(typeof(AimWeaponEvent))]
 [RequireComponent(typeof(WeaponFiredEvent))]
-[RequireComponent(typeof(WeaponPreFireEvent))]
+[RequireComponent(typeof(FireWeaponEvent))]
+[RequireComponent(typeof(FireWeapon))]
 
 public class Player : MonoBehaviour
 {
@@ -48,8 +49,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public SetActiveWeaponEvent setActiveWeaponEvent;
     [HideInInspector] public AimWeapon aimWeapon;
     [HideInInspector] public AimWeaponEvent aimWeaponEvent;
-    [HideInInspector] public WeaponPreFireEvent weaponPreFireEvent;
+    [HideInInspector] public FireWeaponEvent fireWeaponEvent;
     [HideInInspector] public WeaponFiredEvent weaponFiredEvent;
+    [HideInInspector] public FireWeapon fireWeapon;
 
     public List<Weapon> weaponList = new();
 
@@ -73,8 +75,9 @@ public class Player : MonoBehaviour
         setActiveWeaponEvent = GetComponent<SetActiveWeaponEvent>();
         aimWeapon = GetComponent<AimWeapon>();
         aimWeaponEvent = GetComponent<AimWeaponEvent>();
-        weaponPreFireEvent = GetComponent<WeaponPreFireEvent>();
+        fireWeaponEvent = GetComponent<FireWeaponEvent>();
         weaponFiredEvent = GetComponent<WeaponFiredEvent>();
+        fireWeapon = GetComponent<FireWeapon>();
 
     }
 
@@ -107,7 +110,7 @@ public class Player : MonoBehaviour
         {
             weaponDetails = weaponDetail,
             weaponReloadTimer = 0f,
-            weaponClipAmmoRemainig = weaponDetail.weaponClipAmmoCapacity,
+            weaponClipAmmoRemaining = weaponDetail.weaponClipAmmoCapacity,
             weaponTotalAmmoRemaining = weaponDetail.weaponAmmoCapacity,
             isWeaponReloading = false
         };

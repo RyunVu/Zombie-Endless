@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
@@ -14,7 +15,9 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private MovementDetailsSO movementDetails;
 
     private Player _player;
+    private SpriteRenderer _playerSpriteRenderer;
     private float _moveSpeed;
+    private bool _leftMouseDownPreviousFrame = false;
     private int _currentWeaponIndex = 1;
 
     #region DASHING VARIABLES
@@ -28,6 +31,7 @@ public class PlayerControl : MonoBehaviour
     private void Awake()
     {
         _player = GetComponent<Player>();
+        _playerSpriteRenderer = GetComponent<SpriteRenderer>();
 
         _moveSpeed = movementDetails.GetMoveSpeed();
     }
@@ -45,9 +49,11 @@ public class PlayerControl : MonoBehaviour
 
         MovementInput();
 
+        WeaponInput();
+
         PlayerDashCooldownTimer();
 
-        AimInput(out float playerAngleDegrees, out AimDirection playerAimDirection);
+        PlayerFacingDirection(out float playerAngleDegrees, out AimDirection playerAimDirection);
     }
 
     void FixedUpdate()
@@ -76,6 +82,28 @@ public class PlayerControl : MonoBehaviour
             _currentWeaponIndex = weaponIndex;
 
             _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[weaponIndex - 1]);
+        }
+    }
+    
+    private void PlayerFacingDirection(out float playerAngleDegrees, out AimDirection playerAimDirection)
+    {
+        Vector3 mouseWorldPositon = HelperUtilities.GetMouseWorldPosition();
+
+        Vector3 playerDirection = (mouseWorldPositon - transform.position);
+
+        playerAngleDegrees = HelperUtilities.GetAngleFromVector(playerDirection);
+
+        playerAimDirection = HelperUtilities.GetAimDirection(playerAngleDegrees);
+
+        switch (playerAimDirection)
+        {
+            case AimDirection.Left:
+                _playerSpriteRenderer.flipX = true;
+                break;
+
+            case AimDirection.Right:
+                _playerSpriteRenderer.flipX = false;
+                break;
         }
     }
 
@@ -146,7 +174,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-     private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         // if collided with something stop player roll coroutine
         StopPlayerRollRoutine();
@@ -169,26 +197,45 @@ public class PlayerControl : MonoBehaviour
     }
 
 
-    private void AimInput(out float playerAngleDegrees, out AimDirection playerAimDirection)
+    private void WeaponInput()
     {
-        Vector3 mouseWorldPositon = HelperUtilities.GetMouseWorldPosition();
+        Vector3 weaponDirection;
+        float weaponAngleDegrees, playerAngleDegrees;
+        AimDirection playerAimDirection;
 
-        Vector3 playerDirection = (mouseWorldPositon - transform.position);
+        AimWeaponInput(out weaponDirection, out weaponAngleDegrees, out playerAngleDegrees, out playerAimDirection);
+
+        FireWeaponInput(weaponDirection, weaponAngleDegrees, playerAngleDegrees, playerAimDirection);
+    }
+
+    private void AimWeaponInput(out Vector3 weaponDirection, out float weaponAngleDegrees, out float playerAngleDegrees, out AimDirection playerAimDirection)
+    {
+        Vector3 mouseWorldPosition = HelperUtilities.GetMouseWorldPosition();
+
+        weaponDirection = (mouseWorldPosition - _player.activeWeapon.GetShootPosition());
+
+        Vector3 playerDirection = (mouseWorldPosition - transform.position);
+
+        weaponAngleDegrees = HelperUtilities.GetAngleFromVector(weaponDirection);
 
         playerAngleDegrees = HelperUtilities.GetAngleFromVector(playerDirection);
 
         playerAimDirection = HelperUtilities.GetAimDirection(playerAngleDegrees);
 
-        switch (playerAimDirection)
-        {
-            case AimDirection.Left:
-                _player.transform.localScale = new Vector3(-1f, 1f, 0f);
-                break;
+        _player.aimWeaponEvent.CallAimWeaponEvent(playerAimDirection, playerAngleDegrees, weaponAngleDegrees, weaponDirection);
 
-            case AimDirection.Right:
-                _player.transform.localScale = new Vector3(1f, 1f, 0f);
-                break;
-        }
     }
 
+
+    private void FireWeaponInput(Vector3 weaponDirection, float weaponAngleDegrees, float playerAngleDegrees, AimDirection playerAimDirection)
+    {
+        if (InputManager.AttackWasPressed)
+        {
+            Debug.Log("Attack");
+            _player.fireWeaponEvent.CallFireWeaponEvent(true, _leftMouseDownPreviousFrame, playerAimDirection, playerAngleDegrees, weaponAngleDegrees, weaponDirection);
+            _leftMouseDownPreviousFrame = true;
+        }
+        else
+            _leftMouseDownPreviousFrame = false;
+    }
 }

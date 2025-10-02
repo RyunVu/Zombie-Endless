@@ -307,7 +307,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1988b4110f0ae142a6dd545a1fb54d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolArray: []
+  poolArray:
+  - poolSize: 30
+    prefab: {fileID: 1641228632193776688, guid: f66163142c5c10b4d88f1ab2c37f7e97, type: 3}
+    componentType: IFireable
 --- !u!4 &406776128
 Transform:
   m_ObjectHideFlags: 0
@@ -426,7 +429,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.99978596
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 40
