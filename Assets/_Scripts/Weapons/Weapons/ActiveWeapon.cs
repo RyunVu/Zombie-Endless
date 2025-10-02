@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 [RequireComponent(typeof(SetActiveWeaponEvent))]
@@ -41,7 +40,7 @@ public class ActiveWeapon : MonoBehaviour
 
         if (_weaponPolygonCollider2D != null && _weaponSpriteRenderer.sprite != null)
         {
-            List<Vector2> spritePhysicsShapePointsList = new();
+            List<Vector2> spritePhysicsShapePointsList = new List<Vector2>();
             _weaponSpriteRenderer.sprite.GetPhysicsShape(0, spritePhysicsShapePointsList);
 
             _weaponPolygonCollider2D.points = spritePhysicsShapePointsList.ToArray();

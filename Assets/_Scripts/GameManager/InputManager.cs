@@ -23,6 +23,16 @@ public static class InputManager
         }
     }
 
+    public static bool AttackWasPressed
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.attackWasPressed;
+            return false;
+        }
+    }
+
     public static float GetVerticalRaw()
     {
         if (PlayerInput.Instance != null)

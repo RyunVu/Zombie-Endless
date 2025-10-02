@@ -9,13 +9,16 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     [SerializeField] private InputActionAsset inputActions;
 
     // Input Action
-    public InputAction _moveAction;
+    public InputAction moveAction;
 
-    public InputAction _dashAction;
+    public InputAction dashAction;
+
+    public InputAction attackAction;
 
     // Input Value
     public Vector2 moveInput { get; private set; }
     public bool dashWasPressed { get; private set; }
+    public bool attackWasPressed { get; private set; }
 
 
     protected override void Awake()
@@ -24,34 +27,38 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         var actionMap = inputActions.FindActionMap("Player");
 
-        _moveAction = actionMap.FindAction("Movement");
-        _dashAction = actionMap.FindAction("Dash");
+        moveAction = actionMap.FindAction("Movement");
+        dashAction = actionMap.FindAction("Dash");
+        attackAction = actionMap.FindAction("Attack");
     }
 
     private void OnEnable()
     {
-        _moveAction.Enable();
-        _dashAction.Enable();
+        moveAction.Enable();
+        dashAction.Enable();
+        attackAction.Enable();
 
-        _dashAction.performed += OnDashPerformed;
+        dashAction.performed += OnDashPerformed;
     }
 
     private void OnDisable()
     {
-        _moveAction.Disable();
-        _dashAction.Disable();
+        moveAction.Disable();
+        dashAction.Disable();
+        attackAction.Disable();
 
-        _dashAction.performed -= OnDashPerformed;
+        dashAction.performed -= OnDashPerformed;
     }
 
     private void Update()
     {
-        moveInput = _moveAction.ReadValue<Vector2>();
+        moveInput = moveAction.ReadValue<Vector2>();
     }
 
     void LateUpdate()
     {
         dashWasPressed = false;
+        attackWasPressed = false;
     }
 
     #region Input events handler
@@ -61,7 +68,13 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         dashWasPressed = true;
     }
 
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        attackWasPressed = true;
+    }
+
     #endregion
+
 
     #region Public Helper Methods
 

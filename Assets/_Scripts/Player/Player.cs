@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public WeaponPreFireEvent weaponPreFireEvent;
     [HideInInspector] public WeaponFiredEvent weaponFiredEvent;
 
-    public List<Weapon> weaponList = new List<Weapon>();
+    public List<Weapon> weaponList = new();
 
     private void Awake()
     {
@@ -67,7 +68,7 @@ public class Player : MonoBehaviour
         movementToPositionEvent = GetComponent<MovementToPositionEvent>();
         health = GetComponent<Health>();
         animatePlayer = GetComponent<AnimatePlayer>();
-        
+
         activeWeapon = GetComponent<ActiveWeapon>();
         setActiveWeaponEvent = GetComponent<SetActiveWeaponEvent>();
         aimWeapon = GetComponent<AimWeapon>();
@@ -92,8 +93,9 @@ public class Player : MonoBehaviour
 
         foreach (WeaponDetailsSO weapon in playerDetailsSO.startingWeaponList)
         {
-            AddWeaponToList(weapon);    
+            AddWeaponToList(weapon);
         }
+
     }
 
     /// <summary>
