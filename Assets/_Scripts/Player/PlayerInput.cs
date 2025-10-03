@@ -19,7 +19,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     public Vector2 moveInput { get; private set; }
     public bool dashWasPressed { get; private set; }
     public bool attackWasPressed { get; private set; }
-
+    public bool attackIsHeld { get; private set; }
+    public bool attackWasReleased { get; private set; }
 
     protected override void Awake()
     {
@@ -40,6 +41,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         dashAction.performed += OnDashPerformed;
         attackAction.performed += OnAttackPerformed;
+        attackAction.performed += OnAttackCanceled;
     }
 
     private void OnDisable()
@@ -50,17 +52,20 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         dashAction.performed -= OnDashPerformed;
         attackAction.performed -= OnAttackPerformed;
+        attackAction.performed -= OnAttackCanceled;
     }
 
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
+        attackIsHeld = attackAction.ReadValue<float>() > .5f;
     }
 
     void LateUpdate()
     {
         dashWasPressed = false;
         attackWasPressed = false;
+        attackWasReleased = false;
     }
 
     #region Input events handler
@@ -73,6 +78,11 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
         attackWasPressed = true;
+    }
+
+    private void OnAttackCanceled(InputAction.CallbackContext context)
+    {
+        attackWasReleased = true;
     }
 
     #endregion

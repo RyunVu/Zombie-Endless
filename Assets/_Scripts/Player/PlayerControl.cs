@@ -211,9 +211,41 @@ public class PlayerControl : MonoBehaviour
     {
         if (InputManager.AttackWasPressed)
         {
-            Debug.Log("Attack");
-            _player.fireWeaponEvent.CallFireWeaponEvent(true, _leftMouseDownPreviousFrame, playerAimDirection, playerAngleDegrees, weaponAngleDegrees, weaponDirection);
+            _player.fireWeaponEvent.CallFireWeaponEvent(
+                true,
+                _leftMouseDownPreviousFrame,
+                playerAimDirection,
+                playerAngleDegrees,
+                weaponAngleDegrees,
+                weaponDirection);
             _leftMouseDownPreviousFrame = true;
+        }
+        else if (InputManager.AttackIsHeld)
+        {
+            _player.fireWeaponEvent.CallFireWeaponEvent(
+                true,
+                _leftMouseDownPreviousFrame,
+                playerAimDirection,
+                playerAngleDegrees,
+                weaponAngleDegrees,
+                weaponDirection
+            );
+
+            _leftMouseDownPreviousFrame = true;
+        }
+        // Stop firing when released
+        else if (InputManager.AttackWasReleased)
+        {
+            _player.fireWeaponEvent.CallFireWeaponEvent(
+                false,
+                _leftMouseDownPreviousFrame,
+                playerAimDirection,
+                playerAngleDegrees,
+                weaponAngleDegrees,
+                weaponDirection
+            );
+
+            _leftMouseDownPreviousFrame = false;
         }
         else
             _leftMouseDownPreviousFrame = false;

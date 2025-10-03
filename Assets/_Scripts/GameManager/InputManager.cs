@@ -33,6 +33,26 @@ public static class InputManager
         }
     }
 
+    public static bool AttackIsHeld
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.attackIsHeld;
+            return false;
+        }
+    }
+
+    public static bool AttackWasReleased
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.attackWasReleased;
+            return false;
+        }
+    }
+
     public static float GetVerticalRaw()
     {
         if (PlayerInput.Instance != null)

@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolArray:
-  - poolSize: 30
+  - poolSize: 50
     prefab: {fileID: 1641228632193776688, guid: f66163142c5c10b4d88f1ab2c37f7e97, type: 3}
     componentType: IFireable
 --- !u!4 &406776128
