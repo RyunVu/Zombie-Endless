@@ -53,6 +53,16 @@ public static class InputManager
         }
     }
 
+    public static bool reloadWasPressed
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.reloadWasPressed;
+            return false;
+        }
+    }
+
     public static float GetVerticalRaw()
     {
         if (PlayerInput.Instance != null)

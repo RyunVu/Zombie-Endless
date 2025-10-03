@@ -15,12 +15,15 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
     public InputAction attackAction;
 
+    public InputAction reloadAction;
+
     // Input Value
     public Vector2 moveInput { get; private set; }
     public bool dashWasPressed { get; private set; }
     public bool attackWasPressed { get; private set; }
     public bool attackIsHeld { get; private set; }
     public bool attackWasReleased { get; private set; }
+    public bool reloadWasPressed { get; private set; }
 
     protected override void Awake()
     {
@@ -31,6 +34,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         moveAction = actionMap.FindAction("Movement");
         dashAction = actionMap.FindAction("Dash");
         attackAction = actionMap.FindAction("Attack");
+        reloadAction = actionMap.FindAction("Reload");
     }
 
     private void OnEnable()
@@ -38,10 +42,12 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         moveAction.Enable();
         dashAction.Enable();
         attackAction.Enable();
+        reloadAction.Enable();
 
         dashAction.performed += OnDashPerformed;
         attackAction.performed += OnAttackPerformed;
         attackAction.performed += OnAttackCanceled;
+        reloadAction.performed += OnReloadPerformed;
     }
 
     private void OnDisable()
@@ -49,10 +55,12 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         moveAction.Disable();
         dashAction.Disable();
         attackAction.Disable();
+        reloadAction.Disable();
 
         dashAction.performed -= OnDashPerformed;
         attackAction.performed -= OnAttackPerformed;
         attackAction.performed -= OnAttackCanceled;
+        reloadAction.performed -= OnReloadPerformed;
     }
 
     private void Update()
@@ -66,6 +74,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         dashWasPressed = false;
         attackWasPressed = false;
         attackWasReleased = false;
+        reloadWasPressed = false;
     }
 
     #region Input events handler
@@ -83,6 +92,11 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     private void OnAttackCanceled(InputAction.CallbackContext context)
     {
         attackWasReleased = true;
+    }
+
+    private void OnReloadPerformed(InputAction.CallbackContext context)
+    {
+        reloadWasPressed = true;
     }
 
     #endregion
