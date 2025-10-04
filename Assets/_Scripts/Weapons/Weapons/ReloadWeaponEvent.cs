@@ -19,5 +19,5 @@ public class ReloadWeaponEvent : MonoBehaviour
 public class ReloadWeaponArgs : EventArgs
 {
     public Weapon weapon;
-    public int topUpAmmoPercent;   
+    public int topUpAmmoPercent;   // Refill 100% ammo when pick up ammo supply
 }

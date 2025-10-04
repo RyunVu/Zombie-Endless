@@ -83,7 +83,7 @@ public class PlayerControl : MonoBehaviour
             _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[weaponIndex - 1]);
         }
     }
-    
+
 
     private void MovementInput()
     {
@@ -186,6 +186,8 @@ public class PlayerControl : MonoBehaviour
         AimWeaponInput(out weaponDirection, out weaponAngleDegrees, out playerAngleDegrees, out playerAimDirection);
 
         FireWeaponInput(weaponDirection, weaponAngleDegrees, playerAngleDegrees, playerAimDirection);
+
+        ReloadWeaponInput();
     }
 
     private void AimWeaponInput(out Vector3 weaponDirection, out float weaponAngleDegrees, out float playerAngleDegrees, out AimDirection playerAimDirection)
@@ -249,5 +251,30 @@ public class PlayerControl : MonoBehaviour
         }
         else
             _leftMouseDownPreviousFrame = false;
+    }
+
+    private void ReloadWeaponInput()
+    {
+        Weapon currentWeapon = _player.activeWeapon.GetCurrentWeapon();
+
+        // Already reloading
+        if (currentWeapon.isWeaponReloading) return;
+
+        // Has no ammo left 
+        if (currentWeapon.weaponTotalAmmoRemaining <= 0 && !currentWeapon.weaponDetails.hasInfiniteClipCapacity) return;
+
+        // Clip full ammo
+        if (currentWeapon.weaponClipAmmoRemaining == currentWeapon.weaponDetails.weaponClipAmmoCapacity) return;
+
+        if (InputManager.reloadWasPressed)
+        {
+            _player.reloadWeaponEvent.CallReloadWeaponEvent(_player.activeWeapon.GetCurrentWeapon(), 0);
+        }
+
+    }
+
+    private IEnumerator ReloadWeaponCouroutine()
+    {
+        yield return null;
     }
 }

@@ -2,20 +2,24 @@ using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
+[RequireComponent(typeof(ActiveWeapon))]
 [RequireComponent(typeof(FireWeaponEvent))]
 [RequireComponent(typeof(WeaponFiredEvent))]
+[RequireComponent(typeof(ReloadWeaponEvent))]
 public class FireWeapon : MonoBehaviour
 {
     private float _fireRateCooldownTimer = 0f;
     private ActiveWeapon _activeWeapon;
     private FireWeaponEvent _fireWeaponEvent;
     private WeaponFiredEvent _weaponFiredEvent;
+    private ReloadWeaponEvent _reloadWeaponEvent;
 
     void Awake()
     {
         _activeWeapon = GetComponent<ActiveWeapon>();
         _fireWeaponEvent = GetComponent<FireWeaponEvent>();
         _weaponFiredEvent = GetComponent<WeaponFiredEvent>();
+        _reloadWeaponEvent = GetComponent<ReloadWeaponEvent>();
     }
 
     void OnEnable()
@@ -30,6 +34,7 @@ public class FireWeapon : MonoBehaviour
         _weaponFiredEvent.OnWeaponFiredEvent -= WeaponFiredEvent_OnWeaponFired;
     }
 
+
     void Update()
     {
         _fireRateCooldownTimer -= Time.deltaTime;
@@ -42,8 +47,9 @@ public class FireWeapon : MonoBehaviour
 
     private void WeaponFiredEvent_OnWeaponFired(WeaponFiredEvent @event, WeaponFiredEventArgs args)
     {
-        
+        // Effect and other suff
     }
+
 
     private void WeaponFire(FireWeaponEventArgs args)
     {
@@ -66,9 +72,12 @@ public class FireWeapon : MonoBehaviour
         if (_activeWeapon.GetCurrentWeapon().weaponTotalAmmoRemaining <= 0 && !_activeWeapon.GetCurrentWeapon().weaponDetails.hasInfiniteAmmo)
             return false;
 
-        // No ammo in the clip and dont have infinite ammo checked
+        // No ammo in the clip and dont have infinite ammo checked --> Call the Reload Weapon Event
         if (_activeWeapon.GetCurrentWeapon().weaponClipAmmoRemaining <= 0 && !_activeWeapon.GetCurrentWeapon().weaponDetails.hasInfiniteClipCapacity)
+        {
+            _reloadWeaponEvent.CallReloadWeaponEvent(_activeWeapon.GetCurrentWeapon(), 0);
             return false;
+        }
 
         // The weapon reloading state
         if (_activeWeapon.GetCurrentWeapon().isWeaponReloading)
