@@ -266,7 +266,7 @@ public class PlayerControl : MonoBehaviour
         // Clip full ammo
         if (currentWeapon.weaponClipAmmoRemaining == currentWeapon.weaponDetails.weaponClipAmmoCapacity) return;
 
-        if (InputManager.reloadWasPressed)
+        if (InputManager.ReloadWasPressed)
         {
             _player.reloadWeaponEvent.CallReloadWeaponEvent(_player.activeWeapon.GetCurrentWeapon(), 0);
         }

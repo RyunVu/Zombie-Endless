@@ -47,3 +47,4 @@ MonoBehaviour:
   playerDetailsList:
   - {fileID: 11400000, guid: 020b317f025ba764e97efa228596c02a, type: 2}
   currentPlayer: {fileID: 11400000, guid: 13c223cc801669d48b47dfb29a50459c, type: 2}
+  ammoIconPrefab: {fileID: 2868952806599719372, guid: cfd262feed446d246ae9b66877ac75b6, type: 3}

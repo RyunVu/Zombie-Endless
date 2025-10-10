@@ -17,13 +17,13 @@ MonoBehaviour:
   weaponType: 1
   weaponShootPosition: {x: 0.95, y: 0.125, z: 0}
   weaponCurrentAmmo: {fileID: 11400000, guid: 1317226a1f22ee54aad6fae33cbf68dc, type: 2}
-  hasInfiniteAmmo: 1
-  hasInfiniteClipCapacity: 1
+  hasInfiniteAmmo: 0
+  hasInfiniteClipCapacity: 0
   weaponClipAmmoCapacity: 4
   weaponAmmoCapacity: 100
   weaponFireRate: 0.2
   weaponPrechargeTime: 0
-  weaponReloadTime: 0
+  weaponReloadTime: 1.5
   meleeDamage: 0
   meleeRange: 0
   meleeArc: 0

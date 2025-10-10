@@ -29,4 +29,8 @@ public static class Settings
     // the distance from the player to the aim target at which the aim angle used changes from player aim angle (close) to weapon aim angle (far)
     public const float useAimAngleDistance = 3.5f;
     #endregion
+
+    #region UI PARAMETERS
+    public const float uiAmmoIconSpacing = 4f;
+    #endregion
 }

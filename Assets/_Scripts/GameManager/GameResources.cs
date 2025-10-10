@@ -20,12 +20,19 @@ public class GameResources : MonoBehaviour
     [Space(10)]
     [Header("PLAYER")]
     #endregion Header PLAYER
-    #region Tooltip
     [Tooltip("Player details list - populate the list with the playerdetails scriptable objects")]
-    #endregion Tooltip
     public List<PlayerDetailsSO> playerDetailsList;
-    #region Tooltip
+
     [Tooltip("The current player scriptable object - this is used to reference the current player between scenes")]
-    #endregion Tooltip
     public CurrentPlayerSO currentPlayer;
+
+
+    #region Header UI
+    [Space(10)]
+    [Header("UI")]
+    #endregion
+    
+    [Tooltip("The ammo icon prefab")]
+    public GameObject ammoIconPrefab;
+
 }

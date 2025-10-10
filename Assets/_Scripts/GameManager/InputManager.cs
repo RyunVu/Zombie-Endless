@@ -53,7 +53,7 @@ public static class InputManager
         }
     }
 
-    public static bool reloadWasPressed
+    public static bool ReloadWasPressed
     {
         get
         {

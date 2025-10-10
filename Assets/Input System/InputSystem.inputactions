@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "Reload",
                     "type": "PassThrough",
                     "id": "a58eecb0-af9b-413a-807f-6b2182f81d06",
                     "expectedControlType": "",
@@ -128,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

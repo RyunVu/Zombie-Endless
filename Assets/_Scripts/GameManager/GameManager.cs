@@ -17,12 +17,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         _playerDetails = GameResources.Instance.currentPlayer.playerDetails;
 
         _chunkTileMapSystem = FindAnyObjectByType<ChunkTilemapSystem>();
-    }
 
-    void Start()
-    {
         InstantiatePlayer();
-        
     }
 
     void InstantiatePlayer()
