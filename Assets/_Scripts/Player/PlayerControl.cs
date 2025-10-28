@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
 [DisallowMultipleComponent]
@@ -51,6 +52,8 @@ public class PlayerControl : MonoBehaviour
 
         WeaponInput();
 
+        ChangeWeaponInput();
+
         PlayerDashCooldownTimer();
 
     }
@@ -59,19 +62,59 @@ public class PlayerControl : MonoBehaviour
     {
     }
 
+    // Only have 1 starting weapon for now
     private void SetStartingWeapon()
     {
-        int index = 1;
+        _currentWeaponIndex = 1;
 
-        foreach (Weapon weapon in _player.weaponList)
-        {
-            if (weapon.weaponDetails == _player.playerDetailsSO.startingWeapon)
-            {
-                SetWeaponByIndex(index);
-                break;
-            }
-            index++;
-        }
+        if (_player.weaponList == null || _player.weaponList.Count == 0 || _player.playerDetailsSO.startingWeapon == null) return;
+
+        SetWeaponByIndex(_currentWeaponIndex);
+    }
+
+    private void ChangeWeaponInput()
+    {
+        if (InputManager.MouseScrollInput < 0f)
+            PreviousWeapon();
+
+        if (InputManager.MouseScrollInput > 0f)
+            NextWeapon();
+
+        if (InputManager.SelectWeapon1WasPressed)
+            SetWeaponByIndex(1);
+
+        if (InputManager.SelectWeapon2WasPressed)
+            TrySetWeaponByIndex(2);
+
+    }
+
+    private bool CanSwitchWeapon()
+    {
+        return _player.weaponList != null && _player.weaponList.Count > 1;
+    }
+
+    private void PreviousWeapon()
+    {
+        if (!CanSwitchWeapon()) return;
+
+        _currentWeaponIndex--;
+
+        if (_currentWeaponIndex < 1)
+            _currentWeaponIndex = _player.weaponList.Count;
+
+        SetWeaponByIndex(_currentWeaponIndex);
+    }
+
+    private void NextWeapon()
+    {
+        if (!CanSwitchWeapon()) return;
+
+        _currentWeaponIndex++;
+
+        if (_currentWeaponIndex < _player.weaponList.Count)
+            _currentWeaponIndex = 1;
+
+        SetWeaponByIndex(_currentWeaponIndex);
     }
 
     private void SetWeaponByIndex(int weaponIndex)
@@ -82,6 +125,19 @@ public class PlayerControl : MonoBehaviour
 
             _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[weaponIndex - 1]);
         }
+    }
+
+    private void TrySetWeaponByIndex(int weaponIndex)
+    {
+        if (weaponIndex == 1)
+        {
+            SetWeaponByIndex(weaponIndex);
+            return;
+        }
+
+        if (!CanSwitchWeapon()) return;
+
+        SetWeaponByIndex(weaponIndex);
     }
 
 
@@ -190,6 +246,7 @@ public class PlayerControl : MonoBehaviour
         ReloadWeaponInput();
     }
 
+
     private void AimWeaponInput(out Vector3 weaponDirection, out float weaponAngleDegrees, out float playerAngleDegrees, out AimDirection playerAimDirection)
     {
         Vector3 mouseWorldPosition = HelperUtilities.GetMouseWorldPosition();
@@ -277,4 +334,5 @@ public class PlayerControl : MonoBehaviour
     {
         yield return null;
     }
+
 }

@@ -45,9 +45,8 @@ public class PlayerDetailsSO : ScriptableObject
     [Tooltip("Player initail starting weapon")]
     #endregion
     public WeaponDetailsSO startingWeapon;
-    #region Tooltip
-    [Tooltip("Populate with the list of starting weapons")]
-    #endregion
-    public List<WeaponDetailsSO> startingWeaponList;
+    
+    // [Tooltip("Unused: For future multiple starting weapons feature")]
+    // public List<WeaponDetailsSO> startingWeaponList;
 
 }

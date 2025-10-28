@@ -83,5 +83,35 @@ public static class InputManager
             return PlayerInput.Instance.IsMovingVertically() || PlayerInput.Instance.IsMovingHorizontally();
         return false;
     }
+
+    public static bool SelectWeapon1WasPressed
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.selectWeapon1WasPressed;
+            return false;
+        }
+    }
+
+    public static bool SelectWeapon2WasPressed
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.selectWeapon2WasPressed;
+            return false;
+        }
+    }
+
+    public static float MouseScrollInput
+    {
+        get
+        {
+            if (PlayerInput.Instance != null)
+                return PlayerInput.Instance.mouseScrollInput;
+            return 0f;
+        }
+    }
     
 }

@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public WeaponReloadedEvent weaponReloadedEvent;
     [HideInInspector] public ReloadWeapon reloadWeapon;
 
-    public List<Weapon> weaponList = new();
+    public List<Weapon> weaponList = new List<Weapon>(2); // Player only have 2 weapons
 
     private void Awake()
     {
@@ -102,12 +102,7 @@ public class Player : MonoBehaviour
     private void CreatePlayerStartingWeapon()
     {
         weaponList.Clear();
-
-        foreach (WeaponDetailsSO weapon in playerDetailsSO.startingWeaponList)
-        {
-            AddWeaponToList(weapon);
-        }
-
+        AddWeaponToList(playerDetailsSO.startingWeapon);
     }
 
     /// <summary>
@@ -115,7 +110,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void AddWeaponToList(WeaponDetailsSO weaponDetail)
     {
-        Weapon weapon = new Weapon()
+        Weapon newWeapon = new Weapon()
         {
             weaponDetails = weaponDetail,
             weaponReloadTimer = 0f,
@@ -124,9 +119,23 @@ public class Player : MonoBehaviour
             isWeaponReloading = false
         };
 
-        weaponList.Add(weapon);
-        weapon.weaponPositionInList = weaponList.Count;
-        setActiveWeaponEvent.CallSetActiveWeaponEvent(weapon);
+        if (weaponList.Count < 2)
+        {
+            weaponList.Add(newWeapon);
+            newWeapon.weaponPositionInList = weaponList.Count;
+        }
+        else
+        {
+            Weapon currentWeapon = activeWeapon.GetCurrentWeapon();
+            int currentIndex = weaponList.IndexOf(currentWeapon);
+
+            if (currentIndex == -1) currentIndex = 0; // fallback
+
+            weaponList[currentIndex] = newWeapon;
+            newWeapon.weaponPositionInList = currentIndex + 1;
+        }
+        
+        setActiveWeaponEvent.CallSetActiveWeaponEvent(newWeapon);
     }   
 
     private void SetPlayerHealth()

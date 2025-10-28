@@ -17,6 +17,12 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
     public InputAction reloadAction;
 
+    public InputAction scrollWeaponAction;
+
+    public InputAction selectWeapon1Action;
+
+    public InputAction selectWeapon2Action;
+
     // Input Value
     public Vector2 moveInput { get; private set; }
     public bool dashWasPressed { get; private set; }
@@ -24,6 +30,10 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     public bool attackIsHeld { get; private set; }
     public bool attackWasReleased { get; private set; }
     public bool reloadWasPressed { get; private set; }
+
+    public float mouseScrollInput { get; private set; }
+    public bool selectWeapon1WasPressed { get; private set; }
+    public bool selectWeapon2WasPressed { get; private set; }
 
     protected override void Awake()
     {
@@ -35,6 +45,10 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         dashAction = actionMap.FindAction("Dash");
         attackAction = actionMap.FindAction("Attack");
         reloadAction = actionMap.FindAction("Reload");
+
+        scrollWeaponAction = actionMap.FindAction("ScrollWeapon");
+        selectWeapon1Action = actionMap.FindAction("SelectWeapon1");
+        selectWeapon2Action = actionMap.FindAction("SelectWeapon2");
     }
 
     private void OnEnable()
@@ -44,10 +58,18 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.Enable();
         reloadAction.Enable();
 
+        scrollWeaponAction.Enable();
+        selectWeapon1Action.Enable();
+        selectWeapon2Action.Enable();
+
         dashAction.performed += OnDashPerformed;
         attackAction.performed += OnAttackPerformed;
-        attackAction.performed += OnAttackCanceled;
+        attackAction.canceled += OnAttackCanceled;
         reloadAction.performed += OnReloadPerformed;
+
+        selectWeapon1Action.performed += OnSelectWeapon1Performed;
+        selectWeapon2Action.performed += OnSelectWeapon2Performed;
+
     }
 
     private void OnDisable()
@@ -57,16 +79,25 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.Disable();
         reloadAction.Disable();
 
+        scrollWeaponAction.Disable();
+        selectWeapon1Action.Disable();
+        selectWeapon2Action.Disable();
+
         dashAction.performed -= OnDashPerformed;
         attackAction.performed -= OnAttackPerformed;
-        attackAction.performed -= OnAttackCanceled;
+        attackAction.canceled -= OnAttackCanceled;
         reloadAction.performed -= OnReloadPerformed;
+
+        selectWeapon1Action.performed -= OnSelectWeapon1Performed;
+        selectWeapon2Action.performed -= OnSelectWeapon2Performed;
     }
 
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
         attackIsHeld = attackAction.ReadValue<float>() > .5f;
+
+        mouseScrollInput = scrollWeaponAction.ReadValue<float>();
     }
 
     void LateUpdate()
@@ -75,6 +106,9 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackWasPressed = false;
         attackWasReleased = false;
         reloadWasPressed = false;
+
+        selectWeapon1WasPressed = false;
+        selectWeapon2WasPressed = false;
     }
 
     #region Input events handler
@@ -97,6 +131,16 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     private void OnReloadPerformed(InputAction.CallbackContext context)
     {
         reloadWasPressed = true;
+    }
+
+    private void OnSelectWeapon1Performed(InputAction.CallbackContext context)
+    {
+        selectWeapon1WasPressed = true;
+    }
+
+    private void OnSelectWeapon2Performed(InputAction.CallbackContext context)
+    {
+        selectWeapon2WasPressed = true;
     }
 
     #endregion
