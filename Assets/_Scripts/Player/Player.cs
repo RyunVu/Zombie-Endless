@@ -110,6 +110,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void AddWeaponToList(WeaponDetailsSO weaponDetail)
     {
+        if (weaponDetail == null) return;
+
         Weapon newWeapon = new Weapon()
         {
             weaponDetails = weaponDetail,
@@ -119,27 +121,60 @@ public class Player : MonoBehaviour
             isWeaponReloading = false
         };
 
-        if (weaponList.Count < 2)
+        // Case 1: No weapon yet (starter weapon)
+        if (weaponList.Count == 0)
         {
             weaponList.Add(newWeapon);
-            newWeapon.weaponPositionInList = weaponList.Count;
         }
-        else
+
+        // Case 2: One weapon — add the new one as main and remove the old one to sub
+        else if (weaponList.Count == 1)
         {
-            Weapon currentWeapon = activeWeapon.GetCurrentWeapon();
-            int currentIndex = weaponList.IndexOf(currentWeapon);
-
-            if (currentIndex == -1) currentIndex = 0; // fallback
-
-            weaponList[currentIndex] = newWeapon;
-            newWeapon.weaponPositionInList = currentIndex + 1;
+            Weapon oldMain = weaponList[0];
+            weaponList.Insert(0, newWeapon); // new weapon is now main
+            weaponList[1] = oldMain;         // old weapon becomes sub
+            newWeapon.weaponPositionInList = 1;
+            oldMain.weaponPositionInList = 2;
         }
-        
-        setActiveWeaponEvent.CallSetActiveWeaponEvent(newWeapon);
-    }   
+
+        // Case 3: Already have 2 weapons — replace main with the new one
+        else if (weaponList.Count == 2)
+        {
+            weaponList[0] = newWeapon;
+            newWeapon.weaponPositionInList = 1;
+            weaponList[1].weaponPositionInList = 2;
+        }
+
+        // Always set active weapon to new main
+        setActiveWeaponEvent.CallSetActiveWeaponEvent(weaponList[0]);
+    }
 
     private void SetPlayerHealth()
     {
         health.SetStartingHealth(playerDetailsSO.playerHealthAmount);
     }
+
+    public Weapon GetMainWeapon()
+    {
+        return weaponList.Count > 0 ? weaponList[0] : null;
+    }
+
+    public Weapon GetSubWeapon()
+    {
+        return weaponList.Count > 1 ? weaponList[1] : null;
+    }   
+
+    public void SwapWeapons()
+    {
+        if (weaponList.Count < 2) return;
+
+        (weaponList[0], weaponList[1]) = (weaponList[1], weaponList[0]);
+
+        weaponList[0].weaponPositionInList = 1;
+        weaponList[1].weaponPositionInList = 2;
+
+        setActiveWeaponEvent.CallSetActiveWeaponEvent(weaponList[0]);
+    }
+    
+    
 }

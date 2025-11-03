@@ -332,6 +332,34 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: dashAction.m_Name
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: moveAction.m_Name
+      value: Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: attackAction.m_Name
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: reloadAction.m_Name
+      value: Reload
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: scrollWeaponAction.m_Name
+      value: Scroll Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: selectWeapon1Action.m_Name
+      value: Select Weapon 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882101122279164321, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}
+      propertyPath: selectWeapon2Action.m_Name
+      value: Select Weapon 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7215951249299589708, guid: 8e68d36fe41ee5845a2b3949e86c118a, type: 3}

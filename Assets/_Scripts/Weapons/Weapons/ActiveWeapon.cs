@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(SetActiveWeaponEvent))]
@@ -35,7 +36,12 @@ public class ActiveWeapon : MonoBehaviour
 
     private void SetWeapon(Weapon weapon)
     {
+        if (weapon == null) return;
+
         _currentWeapon = weapon;
+
+        List<Weapon> weaponList = GameManager.Instance.GetPlayer().weaponList;
+
         _weaponSpriteRenderer.sprite = weapon.weaponDetails.weaponSprite;
 
         if (_weaponPolygonCollider2D != null && _weaponSpriteRenderer.sprite != null)
@@ -67,10 +73,5 @@ public class ActiveWeapon : MonoBehaviour
     public Vector3 GetShootEffectPosition()
     {
         return _weaponEffectPositionTransform.position;
-    }
-
-    public void RemoveCurrentWeapon()
-    {
-        _currentWeapon = null;
     }
 }

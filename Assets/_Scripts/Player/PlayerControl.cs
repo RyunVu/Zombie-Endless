@@ -111,7 +111,7 @@ public class PlayerControl : MonoBehaviour
 
         _currentWeaponIndex++;
 
-        if (_currentWeaponIndex < _player.weaponList.Count)
+        if (_currentWeaponIndex > _player.weaponList.Count)
             _currentWeaponIndex = 1;
 
         SetWeaponByIndex(_currentWeaponIndex);
