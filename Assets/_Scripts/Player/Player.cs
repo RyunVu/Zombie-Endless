@@ -108,7 +108,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Add and equip the new weapon to the weapon dictionary
     /// </summary>
-    private void AddWeaponToList(WeaponDetailsSO weaponDetail)
+    public void AddWeaponToList(WeaponDetailsSO weaponDetail)
     {
         if (weaponDetail == null) return;
 
@@ -121,29 +121,26 @@ public class Player : MonoBehaviour
             isWeaponReloading = false
         };
 
-        // Case 1: No weapon yet (starter weapon)
         if (weaponList.Count == 0)
         {
             weaponList.Add(newWeapon);
+            newWeapon.weaponPositionInList = 1;
         }
-
-        // Case 2: One weapon — add the new one as main and remove the old one to sub
         else if (weaponList.Count == 1)
         {
-            Weapon oldMain = weaponList[0];
-            weaponList.Insert(0, newWeapon); // new weapon is now main
-            weaponList[1] = oldMain;         // old weapon becomes sub
-            newWeapon.weaponPositionInList = 1;
-            oldMain.weaponPositionInList = 2;
+            weaponList.Insert(0, newWeapon); // new main
+            weaponList[1].weaponPositionInList = 2;
+            weaponList[0].weaponPositionInList = 1;
         }
-
-        // Case 3: Already have 2 weapons — replace main with the new one
-        else if (weaponList.Count == 2)
+        else
         {
+            // Already have 2 weapons, replace main
             weaponList[0] = newWeapon;
-            newWeapon.weaponPositionInList = 1;
+            weaponList[0].weaponPositionInList = 1;
             weaponList[1].weaponPositionInList = 2;
         }
+
+
 
         // Always set active weapon to new main
         setActiveWeaponEvent.CallSetActiveWeaponEvent(weaponList[0]);

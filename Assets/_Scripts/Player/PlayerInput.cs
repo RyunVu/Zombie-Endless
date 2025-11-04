@@ -23,6 +23,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
     public InputAction selectWeapon2Action;
 
+    public InputAction interactAction;
+
     // Input Value
     public Vector2 moveInput { get; private set; }
     public bool dashWasPressed { get; private set; }
@@ -34,6 +36,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     public float mouseScrollInput { get; private set; }
     public bool selectWeapon1WasPressed { get; private set; }
     public bool selectWeapon2WasPressed { get; private set; }
+
+    public bool interactWasPressed { get; private set; }
 
     protected override void Awake()
     {
@@ -49,6 +53,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         scrollWeaponAction = actionMap.FindAction("ScrollWeapon");
         selectWeapon1Action = actionMap.FindAction("SelectWeapon1");
         selectWeapon2Action = actionMap.FindAction("SelectWeapon2");
+
+        interactAction = actionMap.FindAction("Interact");
     }
 
     private void OnEnable()
@@ -62,6 +68,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         selectWeapon1Action.Enable();
         selectWeapon2Action.Enable();
 
+        interactAction.Enable();
+
         dashAction.performed += OnDashPerformed;
         attackAction.performed += OnAttackPerformed;
         attackAction.canceled += OnAttackCanceled;
@@ -69,6 +77,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         selectWeapon1Action.performed += OnSelectWeapon1Performed;
         selectWeapon2Action.performed += OnSelectWeapon2Performed;
+
+        interactAction.performed += OnInteractPerformed;
 
     }
 
@@ -83,6 +93,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         selectWeapon1Action.Disable();
         selectWeapon2Action.Disable();
 
+        interactAction.Disable();
+
         dashAction.performed -= OnDashPerformed;
         attackAction.performed -= OnAttackPerformed;
         attackAction.canceled -= OnAttackCanceled;
@@ -90,6 +102,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         selectWeapon1Action.performed -= OnSelectWeapon1Performed;
         selectWeapon2Action.performed -= OnSelectWeapon2Performed;
+
+        interactAction.performed -= OnInteractPerformed;
     }
 
     private void Update()
@@ -109,6 +123,8 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
         selectWeapon1WasPressed = false;
         selectWeapon2WasPressed = false;
+
+        interactWasPressed = false;
     }
 
     #region Input events handler
@@ -141,6 +157,11 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     private void OnSelectWeapon2Performed(InputAction.CallbackContext context)
     {
         selectWeapon2WasPressed = true;
+    }
+
+    private void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+        interactWasPressed = true;
     }
 
     #endregion

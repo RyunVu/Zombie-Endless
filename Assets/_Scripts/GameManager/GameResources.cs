@@ -31,8 +31,10 @@ public class GameResources : MonoBehaviour
     [Space(10)]
     [Header("UI")]
     #endregion
-    
+
     [Tooltip("The ammo icon prefab")]
     public GameObject ammoIconPrefab;
+
+    public WeaponDetailsSO testWeapon;
 
 }

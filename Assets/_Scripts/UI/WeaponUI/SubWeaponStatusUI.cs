@@ -29,7 +29,12 @@ public class SubWeaponStatusUI : MonoBehaviour {
 
     private void SetWeaponEvent_OnSetActiveWeapon(SetActiveWeaponEvent @event, SetActiveWeaponEventArgs args)
     {
-        UpdateSubWeaponStatusUI(_player.GetSubWeapon());
+        Weapon active = _player.GetMainWeapon();
+        Weapon sub = _player.GetSubWeapon();
+
+        if (sub == active) sub = null;
+
+        UpdateSubWeaponStatusUI(sub);
     }
 
     private void UpdateSubWeaponStatusUI(Weapon weapon)
@@ -46,6 +51,7 @@ public class SubWeaponStatusUI : MonoBehaviour {
         // Case 2: Player has a secondary weapon
         else
         {
+            Debug.Log("_subWeapon: " + _subWeapon.weaponDetails.weaponName);
             _weaponImage.sprite = _subWeapon.weaponDetails.weaponSprite;
             UpdateAmmoText(_subWeapon);
         }

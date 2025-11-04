@@ -138,7 +138,6 @@ public class MainWeaponStatusUI : MonoBehaviour
 
         for (int i = 0; i < weapon.weaponClipAmmoRemaining; i++)
         {
-            Debug.Log("GameResources.Instance.ammoIconPrefab: " + GameResources.Instance.ammoIconPrefab);
             GameObject ammoIcon = Instantiate(GameResources.Instance.ammoIconPrefab, _ammoHolderTransform);
 
             RectTransform ammoIconRectTransform = ammoIcon.GetComponent<RectTransform>();

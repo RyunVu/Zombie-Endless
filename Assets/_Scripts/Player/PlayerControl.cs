@@ -19,7 +19,6 @@ public class PlayerControl : MonoBehaviour
     private SpriteRenderer _playerSpriteRenderer;
     private float _moveSpeed;
     private bool _leftMouseDownPreviousFrame = false;
-    private int _currentWeaponIndex = 1;
 
     #region DASHING VARIABLES
     private Coroutine _playerDashCoroutine;
@@ -56,6 +55,8 @@ public class PlayerControl : MonoBehaviour
 
         PlayerDashCooldownTimer();
 
+        TestPickupWeaponInput();
+
     }
 
     void FixedUpdate()
@@ -65,81 +66,25 @@ public class PlayerControl : MonoBehaviour
     // Only have 1 starting weapon for now
     private void SetStartingWeapon()
     {
-        _currentWeaponIndex = 1;
+        if (_player.weaponList == null || _player.weaponList.Count == 0) return;
 
-        if (_player.weaponList == null || _player.weaponList.Count == 0 || _player.playerDetailsSO.startingWeapon == null) return;
-
-        SetWeaponByIndex(_currentWeaponIndex);
+        _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[0]);
     }
 
     private void ChangeWeaponInput()
     {
-        if (InputManager.MouseScrollInput < 0f)
-            PreviousWeapon();
+        if (_player.weaponList.Count < 2) return;
 
-        if (InputManager.MouseScrollInput > 0f)
-            NextWeapon();
+        if (InputManager.MouseScrollInput != 0f)
+            _player.SwapWeapons();
 
         if (InputManager.SelectWeapon1WasPressed)
-            SetWeaponByIndex(1);
+            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[0]);
 
         if (InputManager.SelectWeapon2WasPressed)
-            TrySetWeaponByIndex(2);
+            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[1]);
 
-    }
-
-    private bool CanSwitchWeapon()
-    {
-        return _player.weaponList != null && _player.weaponList.Count > 1;
-    }
-
-    private void PreviousWeapon()
-    {
-        if (!CanSwitchWeapon()) return;
-
-        _currentWeaponIndex--;
-
-        if (_currentWeaponIndex < 1)
-            _currentWeaponIndex = _player.weaponList.Count;
-
-        SetWeaponByIndex(_currentWeaponIndex);
-    }
-
-    private void NextWeapon()
-    {
-        if (!CanSwitchWeapon()) return;
-
-        _currentWeaponIndex++;
-
-        if (_currentWeaponIndex > _player.weaponList.Count)
-            _currentWeaponIndex = 1;
-
-        SetWeaponByIndex(_currentWeaponIndex);
-    }
-
-    private void SetWeaponByIndex(int weaponIndex)
-    {
-        if (weaponIndex - 1 < _player.weaponList.Count)
-        {
-            _currentWeaponIndex = weaponIndex;
-
-            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[weaponIndex - 1]);
-        }
-    }
-
-    private void TrySetWeaponByIndex(int weaponIndex)
-    {
-        if (weaponIndex == 1)
-        {
-            SetWeaponByIndex(weaponIndex);
-            return;
-        }
-
-        if (!CanSwitchWeapon()) return;
-
-        SetWeaponByIndex(weaponIndex);
-    }
-
+    } 
 
     private void MovementInput()
     {
@@ -333,6 +278,18 @@ public class PlayerControl : MonoBehaviour
     private IEnumerator ReloadWeaponCouroutine()
     {
         yield return null;
+    }
+
+    private void TestPickupWeaponInput()
+    {
+        if (InputManager.interactWasPressed)
+        {
+            WeaponDetailsSO testWeapon = GameResources.Instance.testWeapon;
+
+            if (testWeapon == null) return;
+
+            _player.AddWeaponToList(testWeapon);
+        }
     }
 
 }
