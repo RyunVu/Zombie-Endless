@@ -68,12 +68,15 @@ public class FireWeapon : MonoBehaviour
 
     private bool IsWeaponReadyToFire()
     {
+        
+        WeaponDetailsSO details = _activeWeapon.GetCurrentWeapon().weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return false;
         // No total ammo and dont have infinite ammo checked
-        if (_activeWeapon.GetCurrentWeapon().weaponTotalAmmoRemaining <= 0 && !_activeWeapon.GetCurrentWeapon().weaponDetails.hasInfiniteAmmo)
+        if (_activeWeapon.GetCurrentWeapon().weaponTotalAmmoRemaining <= 0 && !ranged.hasInfiniteAmmo)
             return false;
 
         // No ammo in the clip and dont have infinite ammo checked --> Call the Reload Weapon Event
-        if (_activeWeapon.GetCurrentWeapon().weaponClipAmmoRemaining <= 0 && !_activeWeapon.GetCurrentWeapon().weaponDetails.hasInfiniteClipCapacity)
+        if (_activeWeapon.GetCurrentWeapon().weaponClipAmmoRemaining <= 0 && !ranged.hasInfiniteClipCapacity)
         {
             _reloadWeaponEvent.CallReloadWeaponEvent(_activeWeapon.GetCurrentWeapon(), 0);
             return false;
@@ -94,6 +97,10 @@ public class FireWeapon : MonoBehaviour
 
     private void FireAmmo(float aimAngle, float weaponAimAngle, Vector3 weaponAimDirectionVector)
     {
+        
+        WeaponDetailsSO details = _activeWeapon.GetCurrentWeapon().weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
         AmmoDetailsSO ammoDetail = _activeWeapon.GetCurrentAmmo();
 
         if (ammoDetail != null)
@@ -110,7 +117,7 @@ public class FireWeapon : MonoBehaviour
             ammo.InitialiseAmmo(ammoDetail, aimAngle, weaponAimAngle, ammoSpeed, weaponAimDirectionVector);
 
             // Reduces the ammo in the clip
-            if (!_activeWeapon.GetCurrentWeapon().weaponDetails.hasInfiniteClipCapacity)
+            if (!ranged.hasInfiniteClipCapacity)
             {
                 _activeWeapon.GetCurrentWeapon().weaponClipAmmoRemaining--;
                 _activeWeapon.GetCurrentWeapon().weaponTotalAmmoRemaining--;
@@ -123,6 +130,8 @@ public class FireWeapon : MonoBehaviour
 
     private void ResetFireRateCooldownTimer()
     {
-        _fireRateCooldownTimer = _activeWeapon.GetCurrentWeapon().weaponDetails.weaponFireRate;
+        WeaponDetailsSO details = _activeWeapon.GetCurrentWeapon().weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+        _fireRateCooldownTimer = ranged.weaponFireRate;
     }
 }

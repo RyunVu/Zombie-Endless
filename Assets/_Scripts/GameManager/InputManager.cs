@@ -94,25 +94,16 @@ public static class InputManager
         return false;
     }
 
-    public static bool SelectWeapon1WasPressed
+    public static bool ChangeWeaponWasPressed
     {
         get
         {
             if (PlayerInput.Instance != null)
-                return PlayerInput.Instance.selectWeapon1WasPressed;
+                return PlayerInput.Instance.changeWeaponPressed;
             return false;
         }
     }
 
-    public static bool SelectWeapon2WasPressed
-    {
-        get
-        {
-            if (PlayerInput.Instance != null)
-                return PlayerInput.Instance.selectWeapon2WasPressed;
-            return false;
-        }
-    }
 
     public static float MouseScrollInput
     {

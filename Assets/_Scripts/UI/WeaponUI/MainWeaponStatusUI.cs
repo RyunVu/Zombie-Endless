@@ -35,7 +35,7 @@ public class MainWeaponStatusUI : MonoBehaviour
     void Awake()
     {
         _player = GameManager.Instance.GetPlayer();
-        Debug.Log("Player get init " + _player);
+        _reloadText.text = "";
     }
     void Start()
     {
@@ -102,6 +102,9 @@ public class MainWeaponStatusUI : MonoBehaviour
     {
         UpdateActiveWeaponImage(weapon.weaponDetails);
         UpdateActiveWeaponName(weapon);
+    
+        if (weapon.weaponDetails is not RangedWeaponDetailsSO ranged) return;
+
         UpdateAmmoText(weapon);
         UpdateAmmoLoadedIcons(weapon);
 
@@ -119,14 +122,16 @@ public class MainWeaponStatusUI : MonoBehaviour
     }
 
     private void UpdateActiveWeaponName(Weapon weapon)
-    {
-        
+    {        
         _weaponNameText.text = "(" + weapon.weaponPositionInList + ") " + weapon.weaponDetails.weaponName.ToUpper();
     }
 
     private void UpdateAmmoText(Weapon weapon)
     {
-        if (weapon.weaponDetails.hasInfiniteAmmo)
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
+        if (ranged.hasInfiniteAmmo)
             _ammoRemainingText.text = "INFINITE AMMO";
         else
             _ammoRemainingText.text = weapon.weaponClipAmmoRemaining.ToString() + " / " + weapon.weaponTotalAmmoRemaining.ToString();
@@ -134,6 +139,9 @@ public class MainWeaponStatusUI : MonoBehaviour
 
     private void UpdateAmmoLoadedIcons(Weapon weapon)
     {
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
         ClearAmmoLoadedIcons();
 
         for (int i = 0; i < weapon.weaponClipAmmoRemaining; i++)
@@ -159,8 +167,11 @@ public class MainWeaponStatusUI : MonoBehaviour
 
     private void UpdateWeaponReloadBar(Weapon weapon)
     {
-        if (weapon.weaponDetails.hasInfiniteClipCapacity)
-            return;
+
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
+        if (ranged.hasInfiniteClipCapacity) return;
 
         StopReloadWeaponCoroutine();
         UpdateReloadText(weapon);
@@ -171,11 +182,14 @@ public class MainWeaponStatusUI : MonoBehaviour
 
     private IEnumerator UpdateWeaponReloadBarRoutine(Weapon weapon)
     {
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) yield break;
+
         _barImage.color = Color.red;
 
         while (weapon.isWeaponReloading)
         {
-            float barFill = weapon.weaponReloadTimer / weapon.weaponDetails.weaponReloadTime;
+            float barFill = weapon.weaponReloadTimer / ranged.weaponReloadTime;
 
             _reloadBar.transform.localScale = new Vector3(barFill, 1f, 1f);
 
@@ -202,7 +216,10 @@ public class MainWeaponStatusUI : MonoBehaviour
 
     private void UpdateReloadText(Weapon weapon)
     {
-        if ((!weapon.weaponDetails.hasInfiniteClipCapacity) && (weapon.weaponClipAmmoRemaining <= 0 || weapon.isWeaponReloading))
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
+        if ((!ranged.hasInfiniteClipCapacity) && (weapon.weaponClipAmmoRemaining <= 0 || weapon.isWeaponReloading))
         {
             _barImage.color = Color.red;
 

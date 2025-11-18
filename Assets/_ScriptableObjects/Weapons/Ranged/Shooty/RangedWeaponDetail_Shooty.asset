@@ -9,25 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e2fea4c60c4e449a982350dd19489b, type: 3}
-  m_Name: WeaponDetails_Shooty
+  m_Script: {fileID: 11500000, guid: 1d4ee6b0c1a028a419d7009654aa52f0, type: 3}
+  m_Name: RangedWeaponDetail_Shooty
   m_EditorClassIdentifier: 
   weaponName: Shooty
   weaponSprite: {fileID: -353751291, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   weaponType: 1
-  weaponShootPosition: {x: 0.95, y: 0.125, z: 0}
+  weaponShootPosition: {x: 1.376, y: 0.208, z: 0}
   weaponCurrentAmmo: {fileID: 11400000, guid: 1317226a1f22ee54aad6fae33cbf68dc, type: 2}
   hasInfiniteAmmo: 0
   hasInfiniteClipCapacity: 0
-  weaponClipAmmoCapacity: 4
-  weaponAmmoCapacity: 100
+  weaponClipAmmoCapacity: 2
+  weaponAmmoCapacity: 24
   weaponFireRate: 0.2
   weaponPrechargeTime: 0
-  weaponReloadTime: 1.5
-  meleeDamage: 0
-  meleeRange: 0
-  meleeArc: 0
-  meleeSwingDuration: 0
-  meleeCooldown: 0
-  meleeKnockback: 0
-  meleeCanPierce: 0
+  weaponReloadTime: 0.5

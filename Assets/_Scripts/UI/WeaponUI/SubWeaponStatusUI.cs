@@ -53,16 +53,28 @@ public class SubWeaponStatusUI : MonoBehaviour {
         {
             Debug.Log("_subWeapon: " + _subWeapon.weaponDetails.weaponName);
             _weaponImage.sprite = _subWeapon.weaponDetails.weaponSprite;
-            UpdateAmmoText(_subWeapon);
+            UpdateAmmoText(weapon);
         }
     }
 
     private void UpdateAmmoText(Weapon weapon)
-    {
-        if (weapon.weaponDetails.hasInfiniteAmmo)
-            _ammoRemainingText.text = "INFINITE AMMO";
+    {       
+        // Handle RangedWeapon
+        if (weapon.weaponDetails is RangedWeaponDetailsSO ranged)
+        {
+            _ammoRemainingText.text = ranged.hasInfiniteAmmo
+                ? "INFINITE AMMO"
+                : $"{weapon.weaponClipAmmoRemaining} / {weapon.weaponTotalAmmoRemaining}";
+        }
+        // Handle MeleeWeapon
+        else if (weapon.weaponDetails is MeleeWeaponDetailsSO)
+        {
+            _ammoRemainingText.text = ""; // Melee weapons have no ammo
+        }
         else
-            _ammoRemainingText.text = weapon.weaponClipAmmoRemaining.ToString() + " / " + weapon.weaponTotalAmmoRemaining.ToString();
+        {
+            _ammoRemainingText.text = ""; // fallback for any other weapon types
+        }
     }
     
 

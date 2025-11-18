@@ -1,4 +1,5 @@
 using System.Collections;
+using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,11 @@ public class PlayerControl : MonoBehaviour
         _playerSpriteRenderer = GetComponent<SpriteRenderer>();
 
         _moveSpeed = movementDetails.GetMoveSpeed();
+        
+        if (_player.movementByVelocityEvent == null)
+            _player.movementByVelocityEvent = _player.GetComponent<MovementByVelocityEvent>();
+        if (_player.idleEvent == null)
+            _player.idleEvent = _player.GetComponent<IdleEvent>();
     }
 
     void Start()
@@ -59,10 +65,6 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    void FixedUpdate()
-    {
-    }
-
     // Only have 1 starting weapon for now
     private void SetStartingWeapon()
     {
@@ -78,12 +80,8 @@ public class PlayerControl : MonoBehaviour
         if (InputManager.MouseScrollInput != 0f)
             _player.SwapWeapons();
 
-        if (InputManager.SelectWeapon1WasPressed)
-            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[0]);
-
-        if (InputManager.SelectWeapon2WasPressed)
-            _player.setActiveWeaponEvent.CallSetActiveWeaponEvent(_player.weaponList[1]);
-
+        if (InputManager.ChangeWeaponWasPressed)
+            _player.SwapWeapons();
     } 
 
     private void MovementInput()
@@ -186,9 +184,21 @@ public class PlayerControl : MonoBehaviour
 
         AimWeaponInput(out weaponDirection, out weaponAngleDegrees, out playerAngleDegrees, out playerAimDirection);
 
-        FireWeaponInput(weaponDirection, weaponAngleDegrees, playerAngleDegrees, playerAimDirection);
+        Weapon currentWeapon = _player.activeWeapon.GetCurrentWeapon();
+        if (currentWeapon == null) return;
+        
+        WeaponDetailsSO details = currentWeapon.weaponDetails;
 
-        ReloadWeaponInput();
+
+        if (details is RangedWeaponDetailsSO ranged){
+            FireWeaponInput(weaponDirection, weaponAngleDegrees, playerAngleDegrees, playerAimDirection);
+            ReloadWeaponInput();
+        }
+
+        else if (details is MeleeWeaponDetailsSO melee){
+            // Debug.Log("Melee attack");
+        }
+
     }
 
 
@@ -258,15 +268,18 @@ public class PlayerControl : MonoBehaviour
     private void ReloadWeaponInput()
     {
         Weapon currentWeapon = _player.activeWeapon.GetCurrentWeapon();
+        WeaponDetailsSO details = currentWeapon.weaponDetails;
+
+        if (details is not RangedWeaponDetailsSO ranged) return;
 
         // Already reloading
         if (currentWeapon.isWeaponReloading) return;
 
         // Has no ammo left 
-        if (currentWeapon.weaponTotalAmmoRemaining <= 0 && !currentWeapon.weaponDetails.hasInfiniteClipCapacity) return;
+        if (currentWeapon.weaponTotalAmmoRemaining <= 0 && !ranged.hasInfiniteClipCapacity) return;
 
         // Clip full ammo
-        if (currentWeapon.weaponClipAmmoRemaining == currentWeapon.weaponDetails.weaponClipAmmoCapacity) return;
+        if (currentWeapon.weaponClipAmmoRemaining == ranged.weaponClipAmmoCapacity) return;
 
         if (InputManager.ReloadWasPressed)
         {

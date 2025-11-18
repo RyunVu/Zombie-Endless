@@ -10,5 +10,4 @@ public class Weapon
     public int weaponClipAmmoRemaining;
     public int weaponTotalAmmoRemaining;
     public bool isWeaponReloading;
-
 }

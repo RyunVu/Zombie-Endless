@@ -48,10 +48,14 @@ public class ReloadWeapon : MonoBehaviour
 
     private IEnumerator ReloadWeaponRoutine(Weapon weapon, int topUpAmmoPercent)
     {
+        WeaponDetailsSO details = weapon.weaponDetails;
+
+        if (details is not RangedWeaponDetailsSO ranged) yield break;
+
         weapon.isWeaponReloading = true;
 
         // Reload progess time
-        while (weapon.weaponReloadTimer < weapon.weaponDetails.weaponReloadTime)
+        while (weapon.weaponReloadTimer < ranged.weaponReloadTime)
         {
             weapon.weaponReloadTimer += Time.deltaTime;
             yield return null;
@@ -60,23 +64,23 @@ public class ReloadWeapon : MonoBehaviour
         // Total ammo update
         if (topUpAmmoPercent != 0)
         {
-            int ammoIncrease = Mathf.RoundToInt((weapon.weaponDetails.weaponAmmoCapacity * topUpAmmoPercent) / 100f);
+            int ammoIncrease = Mathf.RoundToInt((ranged.weaponAmmoCapacity * topUpAmmoPercent) / 100f);
 
             int totalAmmo = weapon.weaponTotalAmmoRemaining + ammoIncrease;
 
-            if (totalAmmo > weapon.weaponDetails.weaponAmmoCapacity)
-                weapon.weaponTotalAmmoRemaining = weapon.weaponDetails.weaponAmmoCapacity;
+            if (totalAmmo > ranged.weaponAmmoCapacity)
+                weapon.weaponTotalAmmoRemaining = ranged.weaponAmmoCapacity;
             else
                 weapon.weaponTotalAmmoRemaining = totalAmmo;
         }
 
         // Has infinite ammo
-        if (weapon.weaponDetails.hasInfiniteAmmo)
-            weapon.weaponClipAmmoRemaining = weapon.weaponDetails.weaponClipAmmoCapacity;
+        if (ranged.hasInfiniteAmmo)
+            weapon.weaponClipAmmoRemaining = ranged.weaponClipAmmoCapacity;
 
         else
         {
-            int neededAmmo = weapon.weaponDetails.weaponClipAmmoCapacity - weapon.weaponClipAmmoRemaining;
+            int neededAmmo = ranged.weaponClipAmmoCapacity - weapon.weaponClipAmmoRemaining;
             int ammoToLoad = Mathf.Min(neededAmmo, weapon.weaponTotalAmmoRemaining);
 
             weapon.weaponClipAmmoRemaining += ammoToLoad;

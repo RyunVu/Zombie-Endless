@@ -205,6 +205,9 @@ GameObject:
   - component: {fileID: 6369329628786274619}
   - component: {fileID: 1144708438792316747}
   - component: {fileID: 3448920449542443774}
+  - component: {fileID: 6487079674089642440}
+  - component: {fileID: 6377926918980035244}
+  - component: {fileID: 7394718951042224878}
   m_Layer: 0
   m_Name: Player_Base
   m_TagString: Untagged
@@ -268,6 +271,42 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  reloadAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b0c0c685-85cc-487e-a357-000bb2b68e93
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  scrollWeaponAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 14c8e946-6eb9-4459-bc75-0839fe3aa019
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  changeWeaponAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 35d75074-cd70-4301-94fc-aca464ac377b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 28b8fdb5-868f-4e96-9447-cce454d7fdf8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &2517938478232142852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,6 +352,9 @@ MonoBehaviour:
   fireWeaponEvent: {fileID: 0}
   weaponFiredEvent: {fileID: 0}
   fireWeapon: {fileID: 0}
+  reloadWeaponEvent: {fileID: 0}
+  weaponReloadedEvent: {fileID: 0}
+  reloadWeapon: {fileID: 0}
   weaponList: []
 --- !u!210 &6394936286438258822
 SortingGroup:
@@ -652,6 +694,7 @@ MonoBehaviour:
   _weaponPolygonCollider2D: {fileID: 4132094261969789326}
   _weaponShootPositionTransform: {fileID: 1026023022429207636}
   _weaponEffectPositionTransform: {fileID: 8665854880168200158}
+  _meleeHitPositionTransform: {fileID: 0}
 --- !u!114 &2046630232609489820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,6 +754,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7af4872790a6ff4dbbcccb029c6ba59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6487079674089642440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231360077554563345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3eea247878d73548acc765fd2e0c17f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6377926918980035244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231360077554563345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411f5354fdc59f945b8f6f35f5dd7252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7394718951042224878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231360077554563345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf163679649a7d74dac41a674adac79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7215951249299589708
@@ -888,7 +967,7 @@ Transform:
   m_GameObject: {fileID: 9127654852928145974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -8,8 +8,13 @@ public class ActiveWeapon : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _weaponSpriteRenderer;
     [SerializeField] private PolygonCollider2D _weaponPolygonCollider2D;
+
+    // Ranged weapon shoot position transform
     [SerializeField] private Transform _weaponShootPositionTransform;
     [SerializeField] private Transform _weaponEffectPositionTransform;
+
+    // Melee weapon hit position transform
+    [SerializeField] private Transform _meleeHitPositionTransform;
 
     private SetActiveWeaponEvent _setActiveWeaponEvent;
     private Weapon _currentWeapon;
@@ -52,12 +57,18 @@ public class ActiveWeapon : MonoBehaviour
             _weaponPolygonCollider2D.points = spritePhysicsShapePointsList.ToArray();
         }
 
-        _weaponShootPositionTransform.localPosition = weapon.weaponDetails.weaponShootPosition;
+        WeaponDetailsSO details = weapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return;
+
+        _weaponShootPositionTransform.localPosition = ranged.weaponShootPosition;
     }
 
     public AmmoDetailsSO GetCurrentAmmo()
     {
-        return _currentWeapon.weaponDetails.weaponCurrentAmmo;
+        
+        WeaponDetailsSO details = _currentWeapon.weaponDetails;
+        if (details is not RangedWeaponDetailsSO ranged) return null;
+        return ranged.weaponCurrentAmmo;
     }
     
     public Weapon GetCurrentWeapon()
@@ -73,5 +84,13 @@ public class ActiveWeapon : MonoBehaviour
     public Vector3 GetShootEffectPosition()
     {
         return _weaponEffectPositionTransform.position;
+    }
+    
+    public Vector3 GetMeleeHitPosition()
+    {
+        if (_meleeHitPositionTransform == null)
+            return transform.position;
+
+        return _meleeHitPositionTransform.position;
     }
 }

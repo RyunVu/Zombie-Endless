@@ -19,9 +19,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
 
     public InputAction scrollWeaponAction;
 
-    public InputAction selectWeapon1Action;
-
-    public InputAction selectWeapon2Action;
+    public InputAction changeWeaponAction;
 
     public InputAction interactAction;
 
@@ -34,8 +32,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
     public bool reloadWasPressed { get; private set; }
 
     public float mouseScrollInput { get; private set; }
-    public bool selectWeapon1WasPressed { get; private set; }
-    public bool selectWeapon2WasPressed { get; private set; }
+    public bool changeWeaponPressed { get; private set; }
 
     public bool interactWasPressed { get; private set; }
 
@@ -51,8 +48,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         reloadAction = actionMap.FindAction("Reload");
 
         scrollWeaponAction = actionMap.FindAction("ScrollWeapon");
-        selectWeapon1Action = actionMap.FindAction("SelectWeapon1");
-        selectWeapon2Action = actionMap.FindAction("SelectWeapon2");
+        changeWeaponAction = actionMap.FindAction("ChangeWeapon");
 
         interactAction = actionMap.FindAction("Interact");
     }
@@ -65,8 +61,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         reloadAction.Enable();
 
         scrollWeaponAction.Enable();
-        selectWeapon1Action.Enable();
-        selectWeapon2Action.Enable();
+        changeWeaponAction.Enable();
 
         interactAction.Enable();
 
@@ -75,8 +70,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.canceled += OnAttackCanceled;
         reloadAction.performed += OnReloadPerformed;
 
-        selectWeapon1Action.performed += OnSelectWeapon1Performed;
-        selectWeapon2Action.performed += OnSelectWeapon2Performed;
+        changeWeaponAction.performed += OnChangeWeaponPerformed;
 
         interactAction.performed += OnInteractPerformed;
 
@@ -90,8 +84,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         reloadAction.Disable();
 
         scrollWeaponAction.Disable();
-        selectWeapon1Action.Disable();
-        selectWeapon2Action.Disable();
+        changeWeaponAction.Disable();
 
         interactAction.Disable();
 
@@ -100,8 +93,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackAction.canceled -= OnAttackCanceled;
         reloadAction.performed -= OnReloadPerformed;
 
-        selectWeapon1Action.performed -= OnSelectWeapon1Performed;
-        selectWeapon2Action.performed -= OnSelectWeapon2Performed;
+        changeWeaponAction.performed -= OnChangeWeaponPerformed;
 
         interactAction.performed -= OnInteractPerformed;
     }
@@ -121,8 +113,7 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         attackWasReleased = false;
         reloadWasPressed = false;
 
-        selectWeapon1WasPressed = false;
-        selectWeapon2WasPressed = false;
+        changeWeaponPressed = false;
 
         interactWasPressed = false;
     }
@@ -149,14 +140,9 @@ public class PlayerInput : SingletonMonobehaviour<PlayerInput>
         reloadWasPressed = true;
     }
 
-    private void OnSelectWeapon1Performed(InputAction.CallbackContext context)
+    private void OnChangeWeaponPerformed(InputAction.CallbackContext context)
     {
-        selectWeapon1WasPressed = true;
-    }
-
-    private void OnSelectWeapon2Performed(InputAction.CallbackContext context)
-    {
-        selectWeapon2WasPressed = true;
+        changeWeaponPressed = true;
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext context)

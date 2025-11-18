@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 
 [DisallowMultipleComponent]
@@ -116,10 +117,14 @@ public class Player : MonoBehaviour
         {
             weaponDetails = weaponDetail,
             weaponReloadTimer = 0f,
-            weaponClipAmmoRemaining = weaponDetail.weaponClipAmmoCapacity,
-            weaponTotalAmmoRemaining = weaponDetail.weaponAmmoCapacity,
             isWeaponReloading = false
         };
+
+        if (weaponDetail is RangedWeaponDetailsSO ranged)
+        {
+            newWeapon.weaponClipAmmoRemaining = ranged.weaponClipAmmoCapacity;
+            newWeapon.weaponTotalAmmoRemaining  = ranged.weaponAmmoCapacity;
+        }
 
         if (weaponList.Count == 0)
         {
@@ -171,7 +176,6 @@ public class Player : MonoBehaviour
         weaponList[1].weaponPositionInList = 2;
 
         setActiveWeaponEvent.CallSetActiveWeaponEvent(weaponList[0]);
-    }
-    
+    }   
     
 }

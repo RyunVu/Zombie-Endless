@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7fab712d5f95240a4c774e4255416d, type: 3}
   m_Name: AmmoDetail_TommyGun
   m_EditorClassIdentifier: 
-  ammoName: 
-  isPlayerAmmo: 0
+  ammoName: Bullet 4 x 4
+  isPlayerAmmo: 1
   ammoSprite: {fileID: 21300000, guid: c3be09077243891458bdbf46a57d2e8a, type: 3}
   ammoPrefabArray:
   - {fileID: 0}
